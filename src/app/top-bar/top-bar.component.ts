@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
 
 @Component({
-  selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+  selector: 'app-topbar',
+  templateUrl: './top-bar.component.html',
+  styleUrls: ['./top-bar.component.css']
 })
 export class AppComponent {
   title = 'rectification-app';
