@@ -1,0 +1,39 @@
+.formCard{
+    width: 65%;
+    margin-left: 17.5%;
+    margin-top: 2vh;
+    background-color: whitesmoke;
+    margin-bottom: 2vh;
+}
+.formTitle{
+    font-size: 200%;
+}
+.parameterTitle{
+    font-size: 145%;
+}
+.parameterCard{
+    width: 70%;
+    margin-top: 3vh;
+    margin-left: 13%;
+    text-align: center;
+}
+mat-radio-button{
+    font-size: 150%;
+    margin-top: 1vh;
+}
+.kernelSizeRadio{
+    margin-left: 4%;
+    margin-right: 4%;
+}
+.kernelFormatRadio{
+    margin-left: 6%;
+    margin-right: 6%;
+}
+.rectificationMethodRadio{
+    margin-left: 3%;
+    margin-right: 3%;
+}
+.iterationRadio{
+    margin-left: 3%;
+    margin-right: 3%;
+}
