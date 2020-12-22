@@ -63,4 +63,6 @@
             </mat-card-content>
         </mat-card>
     </mat-card-content>
+    <input #fileInput type="file" (change)="recieveNewArchive($event)" style="display: none;">
+    <button mat-flat-button color = "primary" (click) = "fileInput.click()">Importar arquivo</button>
 </mat-card>
