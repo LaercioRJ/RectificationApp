@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 import { LayerImportingService } from '../services/layer-importing.service';
 import { MessageDeliveryService } from '../services/message-delivery.service';
@@ -13,6 +14,7 @@ export class RectificationFormComponent implements OnInit {
 
   constructor(private layerImporting: LayerImportingService,
               private messageDelivery: MessageDeliveryService,
+              private router: Router,
               private serverConnection: ServerConnectionService) { }
 
   kernelSizes: string[] = ['3x3', '5x5', '7x7', '9x9', '11x11'];
@@ -105,12 +107,14 @@ export class RectificationFormComponent implements OnInit {
         break;
     }
 
-    this.serverConnection.consumeRectification(kFormat, kSize, rMethod, this.selectedIteration).subscribe(result => {
+    this.router.navigateByUrl('/mapeamento/0');
+
+    /*this.serverConnection.consumeRectification(kFormat, kSize, rMethod, this.selectedIteration).subscribe(result => {
       console.log(result.body);
     },
       err => {
         console.log('Deu ruim');
-      });
+      });*/
   }
 
 }

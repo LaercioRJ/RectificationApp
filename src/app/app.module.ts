@@ -8,11 +8,13 @@ import { AppComponent } from './top-bar/top-bar.component';
 import { MaterialModule } from './material-module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RectificationFormComponent } from './rectification-form/rectification-form.component';
+import { MappingComponent } from './mapping/mapping.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    RectificationFormComponent
+    RectificationFormComponent,
+    MappingComponent
   ],
   imports: [
     BrowserModule,
