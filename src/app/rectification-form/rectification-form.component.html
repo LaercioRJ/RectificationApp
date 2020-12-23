@@ -65,4 +65,7 @@
     </mat-card-content>
     <input #fileInput type="file" (change)="recieveNewArchive($event)" style="display: none;">
     <button mat-flat-button color = "primary" (click) = "fileInput.click()">Importar arquivo</button>
+    <div style="text-align: center;">
+        <button color = 'primary' (click) = "executeRectification()" mat-raised-button>Executar retificação</button>
+    </div>
 </mat-card>

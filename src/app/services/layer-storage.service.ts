@@ -14,6 +14,9 @@ export class LayerStorageService {
 
   storeOriginalLayer(newLayer: Layer): void {
     this.originalLayer = newLayer;
-    console.log(this.originalLayer);
+  }
+
+  getOriginalLayer(): Layer {
+    return this.originalLayer;
   }
 }

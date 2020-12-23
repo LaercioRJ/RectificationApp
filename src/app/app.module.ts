@@ -1,6 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './top-bar/top-bar.component';
@@ -16,9 +17,10 @@ import { RectificationFormComponent } from './rectification-form/rectification-f
   imports: [
     BrowserModule,
     AppRoutingModule,
-    MaterialModule,
     BrowserAnimationsModule,
     FormsModule,
+    HttpClientModule,
+    MaterialModule,
     ReactiveFormsModule
   ],
   providers: [],

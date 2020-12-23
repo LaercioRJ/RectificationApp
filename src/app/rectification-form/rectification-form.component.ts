@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 
 import { LayerImportingService } from '../services/layer-importing.service';
 import { MessageDeliveryService } from '../services/message-delivery.service';
+import { ServerConnectionService } from '../services/server-connection.service';
 
 @Component({
   selector: 'app-rectification-form',
@@ -11,7 +12,8 @@ import { MessageDeliveryService } from '../services/message-delivery.service';
 export class RectificationFormComponent implements OnInit {
 
   constructor(private layerImporting: LayerImportingService,
-              private messageDelivery: MessageDeliveryService) { }
+              private messageDelivery: MessageDeliveryService,
+              private serverConnection: ServerConnectionService) { }
 
   kernelSizes: string[] = ['3x3', '5x5', '7x7', '9x9', '11x11'];
   selectedKernelSize = '3x3';
@@ -51,6 +53,64 @@ export class RectificationFormComponent implements OnInit {
     } else {
       return false;
     }
+  }
+
+  executeRectification(): void {
+    let kFormat: string;
+    let kSize: number;
+    let rMethod: string;
+
+    switch (this.selectedKernelFormat) {
+      case 'Retangular':
+        kFormat = 'rect';
+        break;
+      case 'Elipse':
+        kFormat = 'ellipse';
+        break;
+      case 'Cruz':
+        kFormat = 'cross';
+        break;
+    }
+
+    switch (this.selectedKernelSize) {
+      case '3x3':
+        kSize = 3;
+        break;
+      case '5x5':
+        kSize = 5;
+        break;
+      case '7x7':
+        kSize = 7;
+        break;
+      case '9x9':
+        kSize = 9;
+        break;
+      case '11x11':
+        kSize = 11;
+        break;
+    }
+
+    switch (this.selectedRectificationMethod) {
+      case 'Mediana':
+        rMethod = 'median';
+        break;
+      case 'Aberto':
+        rMethod = 'open';
+        break;
+      case 'Fechado':
+        rMethod = 'close';
+        break;
+      case 'Aberto e Fechado':
+        rMethod = 'openandclose';
+        break;
+    }
+
+    this.serverConnection.consumeRectification(kFormat, kSize, rMethod, this.selectedIteration).subscribe(result => {
+      console.log(result.body);
+    },
+      err => {
+        console.log('Deu ruim');
+      });
   }
 
 }
