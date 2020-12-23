@@ -1,3 +1,6 @@
 .mainTitle{
     font-size: x-large;
 }
+.mainTitle:hover{
+    cursor: pointer;
+}
