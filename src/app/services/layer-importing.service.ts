@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { LayerStorageService } from '../services/layer-storage.service';
 import { MessageDeliveryService } from '../services/message-delivery.service';
 
-import { Samplingpoint } from '../classes/sampling-point';
+import { SamplingPoint } from '../classes/sampling-point';
 import { Layer } from '../classes/layer';
 
 @Injectable({
@@ -17,7 +17,7 @@ export class LayerImportingService {
   private header1 = 'Latitude';
   private header2 = 'Longitude';
   private header3 = 'Classe';
-  private samplingPoints: Samplingpoint[] = [];
+  private samplingPoints: SamplingPoint[] = [];
 
   fileToLayer(file: File): void {
     const reader = new FileReader();
@@ -48,7 +48,7 @@ export class LayerImportingService {
     fileLines = fileContent.split(/\n/);
     for (; lineIndex < fileLines.length; lineIndex++) {
       lineValues = fileLines[lineIndex].split(',');
-      this.samplingPoints.push(new Samplingpoint(Number(lineValues[0]), Number(lineValues[1]), Number(lineValues[2])));
+      this.samplingPoints.push(new SamplingPoint(Number(lineValues[0]), Number(lineValues[1]), Number(lineValues[2])));
     }
     this.storeLayer();
   }
@@ -56,6 +56,7 @@ export class LayerImportingService {
   private storeLayer(): void {
     const layer = new Layer(this.header1, this.header2, this.header3);
     layer.samplingPoints = this.samplingPoints;
+    layer.pointsQuantity = this.samplingPoints.length;
     this.layerStorage.storeOriginalLayer(layer);
     this.messageDelivery.showTimedMessage('Layer importada com sucesso!', 2500);
   }

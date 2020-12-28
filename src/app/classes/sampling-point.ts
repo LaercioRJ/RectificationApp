@@ -1,4 +1,4 @@
-export class Samplingpoint {
+export class SamplingPoint {
     coordinates: number[] = [];
     data: number;
     constructor(firstCoordinate: number, secondCoordinate: number, data: number) {
