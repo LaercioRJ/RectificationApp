@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { LayerImportingService } from '../services/layer-importing.service';
 import { MessageDeliveryService } from '../services/message-delivery.service';
 import { ServerConnectionService } from '../services/server-connection.service';
+import { ResponseToLayerService } from '../services/response-to-layer.service';
 
 @Component({
   selector: 'app-rectification-form',
@@ -14,6 +15,7 @@ export class RectificationFormComponent implements OnInit {
 
   constructor(private layerImporting: LayerImportingService,
               private messageDelivery: MessageDeliveryService,
+              private responseConvertion: ResponseToLayerService,
               private router: Router,
               private serverConnection: ServerConnectionService) { }
 
@@ -55,6 +57,10 @@ export class RectificationFormComponent implements OnInit {
     } else {
       return false;
     }
+  }
+
+  goToFileEditor(): void {
+    this.router.navigateByUrl('edicao');
   }
 
   executeRectification(): void {
@@ -107,14 +113,14 @@ export class RectificationFormComponent implements OnInit {
         break;
     }
 
-    this.router.navigateByUrl('/mapeamento/0');
-
-    /*this.serverConnection.consumeRectification(kFormat, kSize, rMethod, this.selectedIteration).subscribe(result => {
-      console.log(result.body);
+    this.serverConnection.consumeRectification(kFormat, kSize, rMethod, this.selectedIteration).subscribe(result => {
+      this.responseConvertion.convertResponseToLayer(result.body);
+      this.router.navigateByUrl('/mapeamento/0');
     },
       err => {
-        console.log('Deu ruim');
-      });*/
+        this.messageDelivery.showTimedMessage('Houve algum problema na conexão com o servidor, por favor tente novamente' +
+          'mais tarde.', 3200);
+      });
   }
 
 }

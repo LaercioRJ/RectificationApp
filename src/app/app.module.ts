@@ -9,12 +9,14 @@ import { MaterialModule } from './material-module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RectificationFormComponent } from './rectification-form/rectification-form.component';
 import { MappingComponent } from './mapping/mapping.component';
+import { ManagementZoneEditorComponent } from './management-zone-editor/management-zone-editor.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     RectificationFormComponent,
-    MappingComponent
+    MappingComponent,
+    ManagementZoneEditorComponent
   ],
   imports: [
     BrowserModule,

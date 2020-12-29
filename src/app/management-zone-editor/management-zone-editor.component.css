@@ -1,0 +1,10 @@
+.formCard{
+    width: 65%;
+    margin-left: 17.5%;
+    margin-top: 2vh;
+    background-color: whitesmoke;
+    margin-bottom: 2vh;
+}
+.formTitle{
+    font-size: 200%;
+}
