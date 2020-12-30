@@ -43,19 +43,23 @@ export class MappingComponent implements OnInit {
   private vectorLayer: Vector;
 
   originalLayer: Layer;
-  rectifiedLayer: Layer;
+  rectifiedLayer: Layer = null;
+  selectedLayer: Layer = null;
   selectedSamplingPointId = -1;
   selectedSPFirstCoordinate = 0;
   selectedSPSecondCoordinate = 0;
   selectedSPData = 0;
+  mapTypes: string[] = ['Original', 'Retificado'];
+  selectedMapType = 'Original';
 
   ngOnInit(): void {
     this.originalLayer = this.layerStorage.getOriginalLayer();
+    this.selectedLayer = this.originalLayer;
     this.createMap();
   }
 
   private createMap(): void {
-    this.populateVectorlayer(this.originalLayer.samplingPoints);
+    this.populateVectorlayer(this.selectedLayer.samplingPoints);
 
     this.vectorSource = new VectorSource({
       features: this.vectorLayerFeatures
@@ -84,7 +88,7 @@ export class MappingComponent implements OnInit {
         this.vectorLayer
       ],
       view: new View({
-        center: fromLonLat([this.originalLayer.samplingPoints[0].coordinates[0], this.originalLayer.samplingPoints[0].coordinates[1]]),
+        center: fromLonLat([this.selectedLayer.samplingPoints[0].coordinates[0], this.selectedLayer.samplingPoints[0].coordinates[1]]),
         zoom: 5,
         maxResolution: 120,
       }),
@@ -121,6 +125,35 @@ export class MappingComponent implements OnInit {
     }
   }
 
+  changeSelectedMap(mapType: string): void {
+    if (mapType === 'Original') {
+      this.selectedLayer = this.originalLayer;
+      this.updateMap();
+    } else {
+      if (this.rectifiedLayer === null) {
+        this.rectifiedLayer = this.layerStorage.getRectifiedLayer();
+      }
+      this.selectedLayer = this.rectifiedLayer;
+      this.updateMap();
+    }
+  }
+
+  updateMap(): void {
+    this.populateVectorlayer(this.selectedLayer.samplingPoints);
+
+    this.vectorSource = new VectorSource({
+      features: this.vectorLayerFeatures
+    });
+
+    this.vectorLayer = new Vector({
+      source: this.vectorSource
+    });
+
+    this.map.removeLayer(this.map.getLayers().getArray()[1]);
+    this.map.addLayer(this.vectorLayer);
+    this.map.render();
+  }
+
   selectSamplingPoint(clickEvent: Event): void {
     try{
       const eventPixel = this.map.getEventPixel(clickEvent);
@@ -145,13 +178,13 @@ export class MappingComponent implements OnInit {
   chooseNewSamplingPoint(chosenSamplingPointId: number): void {
     this.changeSamplingPointColor(chosenSamplingPointId, this.samplingPointsColors[5]);
     this.selectedSamplingPointId = chosenSamplingPointId;
-    this.selectedSPFirstCoordinate = this.originalLayer.samplingPoints[chosenSamplingPointId].coordinates[0];
-    this.selectedSPSecondCoordinate = this.originalLayer.samplingPoints[chosenSamplingPointId].coordinates[1];
-    this.selectedSPData = this.originalLayer.samplingPoints[chosenSamplingPointId].data;
+    this.selectedSPFirstCoordinate = this.selectedLayer.samplingPoints[chosenSamplingPointId].coordinates[0];
+    this.selectedSPSecondCoordinate = this.selectedLayer.samplingPoints[chosenSamplingPointId].coordinates[1];
+    this.selectedSPData = this.selectedLayer.samplingPoints[chosenSamplingPointId].data;
   }
 
   unchooseSamplingPoint(): void {
-    const samplingPointClass = this.originalLayer.samplingPoints[this.selectedSamplingPointId].data;
+    const samplingPointClass = this.selectedLayer.samplingPoints[this.selectedSamplingPointId].data;
     this.changeSamplingPointColor(this.selectedSamplingPointId, this.getClassColor(samplingPointClass));
     this.selectedSPFirstCoordinate = 0;
     this.selectedSPSecondCoordinate = 0;

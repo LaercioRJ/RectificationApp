@@ -7,6 +7,15 @@
                 <mat-expansion-panel-header>
                     Seleção de Layers
                 </mat-expansion-panel-header>
+
+                <div class="mapSelection">
+                    <mat-radio-group [(ngModel)]="selectedMapType">
+                        <mat-radio-button color="primary" *ngFor="let mapType of mapTypes" [value] = "mapType"
+                            (change)="changeSelectedMap(mapType)">
+                            {{mapType}}
+                        </mat-radio-button>
+                    </mat-radio-group>
+                </div>
             </mat-expansion-panel>
 
             <mat-expansion-panel>
@@ -25,9 +34,9 @@
                         <input matInput [value] = "selectedSPSecondCoordinate" color = "primary" readonly>
                     </mat-form-field>
 
-                    <mat-form-field class = "layerInfo" appearance="outline">
+                    <mat-form-field class="layerInfo" appearance="outline">
                         <mat-label>Classe</mat-label>
-                        
+                        <input matInput [value] = "selectedSPData" color = "primary" readonly>
                     </mat-form-field>
                 </div>
                 <div *ngIf="selectedSamplingPointId === -1">

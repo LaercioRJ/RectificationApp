@@ -138,7 +138,6 @@ export class RectificationFormComponent implements OnInit {
 
     this.serverConnection.consumeRectification(kFormat, kSize, rMethod, iteration).subscribe(result => {
       this.responseConvertion.convertResponseToLayer(result.body);
-      console.log(iteration);
       this.router.navigateByUrl('/mapeamento/0');
     },
       err => {
