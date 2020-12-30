@@ -1,9 +1,53 @@
 <mat-sidenav-container class="sidenavContainer">
     <mat-sidenav class="sidenav" position = "start" mode = "side" opened>
-        <p>Amigo estou aqui</p>
+        <div class = "sidenavTitle">Dados das Layers</div>
+
+        <mat-accordion>
+            <mat-expansion-panel style = "margin-top: 2vh;">
+                <mat-expansion-panel-header>
+                    Seleção de Layers
+                </mat-expansion-panel-header>
+            </mat-expansion-panel>
+
+            <mat-expansion-panel>
+                <mat-expansion-panel-header>
+                    <mat-panel-title>Ponto Amostral</mat-panel-title>
+                </mat-expansion-panel-header>
+
+                <div *ngIf="selectedSamplingPointId !== -1">
+                    <mat-form-field class="layerInfo" appearance="outline">
+                        <mat-label>Latitude</mat-label>
+                        <input matInput [value] = "selectedSPFirstCoordinate" color = "primary" readonly>
+                    </mat-form-field>
+
+                    <mat-form-field class="layerInfo" appearance="outline">
+                        <mat-label>Longitude</mat-label>
+                        <input matInput [value] = "selectedSPSecondCoordinate" color = "primary" readonly>
+                    </mat-form-field>
+
+                    <mat-form-field class = "layerInfo" appearance="outline">
+                        <mat-label>Classe</mat-label>
+                        
+                    </mat-form-field>
+                </div>
+                <div *ngIf="selectedSamplingPointId === -1">
+                    <p class = "warningText">
+                        Nenhum ponto amostral selecionado
+                    </p>
+                </div>
+            </mat-expansion-panel>
+
+            <mat-expansion-panel>
+                <mat-expansion-panel-header>
+                    <mat-panel-title>
+                        Legenda do Mapa
+                    </mat-panel-title>
+                </mat-expansion-panel-header>
+            </mat-expansion-panel>
+        </mat-accordion>
     </mat-sidenav>
     
     <mat-sidenav-content>
-        <div id="map" class="map"></div>
+        <div id="map" (click) = "selectSamplingPoint($event)" class="map"></div>
     </mat-sidenav-content>
 </mat-sidenav-container>

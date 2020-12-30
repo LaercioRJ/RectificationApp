@@ -27,12 +27,28 @@ export class RectificationFormComponent implements OnInit {
   selectedRectificationMethod = 'Mediana';
   iterations: number[] = [1, 2, 3, 4, 5, 6];
   selectedIteration = 1;
+  customIteration = 7;
+  customIterationPreviousValue = 7;
 
   fileExtension = '--';
   fileSize = 0;
   fileName = '--';
 
   ngOnInit(): void {
+  }
+
+  validateIterationNumber(): void{
+    const inputValue = this.customIteration;
+    if ((parseFloat(String(inputValue)) === parseInt(String(inputValue), 10)) && inputValue > 6 && inputValue <= 25) {
+      this.customIterationPreviousValue = this.customIteration;
+    } else {
+      if (!(parseFloat(String(inputValue)) === parseInt(String(inputValue), 10))) {
+        this.messageDelivery.showTimedMessage('Por favor, utilize apenas valores inteiros', 2100);
+      } else {
+        this.messageDelivery.showTimedMessage('Por favor, utilize valores entre 7 e 25', 2100);
+      }
+      this.customIteration = this.customIterationPreviousValue;
+    }
   }
 
   recieveNewArchive(event: any): void {
@@ -49,7 +65,7 @@ export class RectificationFormComponent implements OnInit {
     }
   }
 
-  ArchiveTypeIsCorrect(fileName: string): boolean {
+  private ArchiveTypeIsCorrect(fileName: string): boolean {
     const extension = fileName.slice(fileName.length - 4, fileName.length);
     if (extension === '.txt' || extension === '.csv') {
       this.fileExtension = extension;
@@ -67,6 +83,7 @@ export class RectificationFormComponent implements OnInit {
     let kFormat: string;
     let kSize: number;
     let rMethod: string;
+    let iteration: number;
 
     switch (this.selectedKernelFormat) {
       case 'Retangular':
@@ -113,8 +130,15 @@ export class RectificationFormComponent implements OnInit {
         break;
     }
 
-    this.serverConnection.consumeRectification(kFormat, kSize, rMethod, this.selectedIteration).subscribe(result => {
+    if (Number(this.selectedIteration) === 7) {
+      iteration = this.customIteration;
+    } else {
+      iteration = Number(this.selectedIteration);
+    }
+
+    this.serverConnection.consumeRectification(kFormat, kSize, rMethod, iteration).subscribe(result => {
       this.responseConvertion.convertResponseToLayer(result.body);
+      console.log(iteration);
       this.router.navigateByUrl('/mapeamento/0');
     },
       err => {

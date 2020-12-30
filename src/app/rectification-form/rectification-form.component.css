@@ -37,3 +37,11 @@ mat-radio-button{
     margin-left: 3%;
     margin-right: 3%;
 }
+.customIterationInput{
+    text-align: center;
+    width: 12%;
+}
+.customIterationInputHidden{
+    visibility: hidden;
+    width: 12%;
+}

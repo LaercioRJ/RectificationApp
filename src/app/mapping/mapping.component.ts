@@ -35,7 +35,8 @@ export class MappingComponent implements OnInit {
     [0, 255, 0],
     [0, 0, 255],
     [255, 255, 0],
-    [0, 255, 255]
+    [0, 255, 255],
+    [0, 0, 0] // this is the color for the selected samplingPoint
   ];
   private vectorSource: VectorSource;
   private vectorLayerFeatures = [];
@@ -43,6 +44,10 @@ export class MappingComponent implements OnInit {
 
   originalLayer: Layer;
   rectifiedLayer: Layer;
+  selectedSamplingPointId = -1;
+  selectedSPFirstCoordinate = 0;
+  selectedSPSecondCoordinate = 0;
+  selectedSPData = 0;
 
   ngOnInit(): void {
     this.originalLayer = this.layerStorage.getOriginalLayer();
@@ -114,5 +119,57 @@ export class MappingComponent implements OnInit {
       case 5:
         return this.samplingPointsColors[4];
     }
+  }
+
+  selectSamplingPoint(clickEvent: Event): void {
+    try{
+      const eventPixel = this.map.getEventPixel(clickEvent);
+      const clickedSPId = this.map.getFeaturesAtPixel(eventPixel)[0].getId();
+      if (this.selectedSamplingPointId === -1) {
+        // there was no sampling point already choosen
+        this.chooseNewSamplingPoint(clickedSPId);
+      } else {
+        if (clickedSPId === this.selectedSamplingPointId) {
+          // the clicked sampling point was already selected
+          this.unchooseSamplingPoint();
+        } else {
+          // the user chose another sampling point than the previously selected
+          this.chooseAnotherSamplingpoint(clickedSPId);
+        }
+      }
+    } catch (err) {
+      // there will be an error every time that a click happens outside the boundaries of a samplingPoint
+    }
+  }
+
+  chooseNewSamplingPoint(chosenSamplingPointId: number): void {
+    this.changeSamplingPointColor(chosenSamplingPointId, this.samplingPointsColors[5]);
+    this.selectedSamplingPointId = chosenSamplingPointId;
+    this.selectedSPFirstCoordinate = this.originalLayer.samplingPoints[chosenSamplingPointId].coordinates[0];
+    this.selectedSPSecondCoordinate = this.originalLayer.samplingPoints[chosenSamplingPointId].coordinates[1];
+    this.selectedSPData = this.originalLayer.samplingPoints[chosenSamplingPointId].data;
+  }
+
+  unchooseSamplingPoint(): void {
+    const samplingPointClass = this.originalLayer.samplingPoints[this.selectedSamplingPointId].data;
+    this.changeSamplingPointColor(this.selectedSamplingPointId, this.getClassColor(samplingPointClass));
+    this.selectedSPFirstCoordinate = 0;
+    this.selectedSPSecondCoordinate = 0;
+    this.selectedSPData = 0;
+    this.selectedSamplingPointId = -1;
+  }
+
+  chooseAnotherSamplingpoint(chosenSamplingPoint: number): void {
+    this.unchooseSamplingPoint();
+    this.chooseNewSamplingPoint(chosenSamplingPoint);
+  }
+
+  changeSamplingPointColor(featureId: number, newColorRgb: number[]): void {
+    this.vectorLayerFeatures[featureId].setStyle(new Style({
+      image: new Circle({
+        radius: 3,
+        fill: new Fill({ color: newColorRgb })
+      })
+    }));
   }
 }

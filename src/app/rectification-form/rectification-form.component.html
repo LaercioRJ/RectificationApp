@@ -59,6 +59,11 @@
                     <mat-radio-button class="iterationRadio" color = "primary" *ngFor="let iteration of iterations" [value] = 'iteration'>
                         {{iteration}}
                     </mat-radio-button>
+                    <mat-radio-button value="7" color="primary">Outro:</mat-radio-button>
+                    <mat-form-field class="customIterationInput" appearance="standard">
+                        <input matInput [class.customIterationInputHidden]="selectedIteration < 7" [(ngModel)] = "customIteration"
+                            [disabled] = "selectedIteration < 7" (change) = "validateIterationNumber()" type="number">
+                    </mat-form-field>
                 </mat-radio-group>
             </mat-card-content>
         </mat-card>
