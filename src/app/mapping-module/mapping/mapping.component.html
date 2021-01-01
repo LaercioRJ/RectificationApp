@@ -38,6 +38,12 @@
                         <mat-label>Classe</mat-label>
                         <input matInput [value] = "selectedSPData" color = "primary" readonly>
                     </mat-form-field>
+
+                    <mat-form-field class="layerInfo" appearance="outline">
+                        <mat-label *ngIf="selectedMapType === mapTypes[0]">Após retificar</mat-label>
+                        <mat-label *ngIf="selectedMapType === mapTypes[1]">Sem retificar</mat-label>
+                        <input matInput [value] = "SPDataFromOtherLayer" color = "primary" readonly>
+                    </mat-form-field>
                 </div>
                 <div *ngIf="selectedSamplingPointId === -1">
                     <p class = "warningText">

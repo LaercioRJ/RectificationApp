@@ -1,24 +1,24 @@
 import { Component, OnInit } from '@angular/core';
 
-import Map from '../../../node_modules/ol/Map';
-import OSM from '../../../node_modules/ol/source/OSM';
-import View from '../../../node_modules/ol/View';
-import { fromLonLat } from '../../../node_modules/ol/proj';
-import { Tile } from '../../../node_modules/ol/layer.js';
-import ScaleLine from '../../../node_modules/ol/control/ScaleLine';
+import Map from 'ol/Map';
+import OSM from 'ol/source/OSM';
+import View from 'ol/View';
+import { fromLonLat } from 'ol/proj';
+import { Tile } from 'ol/layer';
+import ScaleLine from 'ol/control/ScaleLine';
 import {defaults as defaultControls, FullScreen} from 'ol/control';
-import Circle from '../../../node_modules/ol/style/Circle';
-import { Vector } from '../../../node_modules/ol/layer.js';
-import VectorSource from '../../../node_modules/ol/source/Vector.js';
-import Fill from '../../../node_modules/ol/style/Fill';
-import Point from '../../../node_modules/ol/geom/Point';
-import Feature from '../../../node_modules/ol/Feature';
-import { Style } from '../../../node_modules/ol/style.js';
+import Circle from 'ol/style/Circle';
+import { Vector } from 'ol/layer';
+import VectorSource from 'ol/source/Vector';
+import Fill from 'ol/style/Fill';
+import Point from 'ol/geom/Point';
+import Feature from 'ol/Feature';
+import { Style } from 'ol/style';
 
-import { LayerStorageService } from '../services/layer-storage.service';
+import { LayerStorageService } from '../../services/layer-storage.service';
 
-import { Layer } from '../classes/layer';
-import { SamplingPoint } from '../classes/sampling-point';
+import { Layer } from '../../classes/layer';
+import { SamplingPoint } from '../../classes/sampling-point';
 
 @Component({
   selector: 'app-mapping',
@@ -36,7 +36,8 @@ export class MappingComponent implements OnInit {
     [0, 0, 255],
     [255, 255, 0],
     [0, 255, 255],
-    [0, 0, 0] // this is the color for the selected samplingPoint
+    [0, 0, 0], // this is the color for the selected samplingPoint
+    [0, 0, 0] // this is the color for the gradient applied previously
   ];
   private vectorSource: VectorSource;
   private vectorLayerFeatures = [];
@@ -49,6 +50,7 @@ export class MappingComponent implements OnInit {
   selectedSPFirstCoordinate = 0;
   selectedSPSecondCoordinate = 0;
   selectedSPData = 0;
+  SPDataFromOtherLayer = 0;
   mapTypes: string[] = ['Original', 'Retificado'];
   selectedMapType = 'Original';
 
@@ -126,6 +128,7 @@ export class MappingComponent implements OnInit {
   }
 
   changeSelectedMap(mapType: string): void {
+    this.unchooseSamplingPoint();
     if (mapType === 'Original') {
       this.selectedLayer = this.originalLayer;
       this.updateMap();
@@ -181,6 +184,15 @@ export class MappingComponent implements OnInit {
     this.selectedSPFirstCoordinate = this.selectedLayer.samplingPoints[chosenSamplingPointId].coordinates[0];
     this.selectedSPSecondCoordinate = this.selectedLayer.samplingPoints[chosenSamplingPointId].coordinates[1];
     this.selectedSPData = this.selectedLayer.samplingPoints[chosenSamplingPointId].data;
+    if (this.selectedMapType === 'Original') {
+      if (this.rectifiedLayer === null) {
+        this.SPDataFromOtherLayer = this.layerStorage.getRectifiedLayer().samplingPoints[chosenSamplingPointId].data;
+      } else {
+        this.SPDataFromOtherLayer = this.rectifiedLayer.samplingPoints[chosenSamplingPointId].data;
+      }
+    } else {
+      this.SPDataFromOtherLayer = this.originalLayer.samplingPoints[chosenSamplingPointId].data;
+    }
   }
 
   unchooseSamplingPoint(): void {
@@ -190,6 +202,7 @@ export class MappingComponent implements OnInit {
     this.selectedSPSecondCoordinate = 0;
     this.selectedSPData = 0;
     this.selectedSamplingPointId = -1;
+    this.SPDataFromOtherLayer = 0;
   }
 
   chooseAnotherSamplingpoint(chosenSamplingPoint: number): void {

@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
-import { MappingComponent } from './mapping/mapping.component';
+import { MappingComponent } from './mapping-module/mapping/mapping.component';
 import { RectificationFormComponent } from './rectification-form/rectification-form.component';
 import { ManagementZoneEditorComponent } from './management-zone-editor/management-zone-editor.component';
 
