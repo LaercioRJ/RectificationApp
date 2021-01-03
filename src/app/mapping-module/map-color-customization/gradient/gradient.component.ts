@@ -22,19 +22,24 @@ export class GradientComponent implements OnInit {
   ];
 
   ngOnInit(): void {
+    console.log(this.colorValues);
     this.initializeGradientExample();
   }
 
   initializeGradientExample(): void {
     if (this.colorValues[6][0] !== 0) {
+      this.applyGradient('red');
       return;
     }
     if (this.colorValues[6][1] !== 0) {
+      this.applyGradient('green');
       return;
     }
     if (this.colorValues[6][2] !== 0) {
+      this.applyGradient('blue');
       return;
     }
+    this.applyGradient('gray');
   }
 
   applyGradient(selectedOption: string): void {

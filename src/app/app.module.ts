@@ -29,7 +29,7 @@ import { GradientComponent } from './mapping-module/map-color-customization/grad
     MaterialModule,
     ReactiveFormsModule
   ],
-  providers: [],
+  providers: [GradientComponent],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

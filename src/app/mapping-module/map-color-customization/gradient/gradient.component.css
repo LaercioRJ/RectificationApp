@@ -1,0 +1,44 @@
+.mainBody{
+    margin-bottom: 5vh;
+}
+.gradientExampleStrip{
+    margin-top: 3.5vh;
+    margin-bottom: 2.7vh;
+    text-align: center;
+}
+.mainTitle{
+    margin-left: 27%;
+    font-size: 140%;
+}
+#gradientExample1{
+    display: inline-block;
+    width: 2.7vw;
+    height: 2.7vw;
+}
+#gradientExample2{
+    display: inline-block;
+    width: 2.7vw;
+    height: 2.7vw;
+}
+#gradientExample3{
+    display: inline-block;
+    width: 2.7vw;
+    height: 2.7vw;
+}
+#gradientExample4{
+    display: inline-block;
+    width: 2.7vw;
+    height: 2.7vw;
+}
+#gradientExample5{
+    display: inline-block;
+    width: 2.7vw;
+    height: 2.7vw;
+}
+.colorButton{
+    width: 22.5%;
+    margin-left: 2.5%;
+}
+.closeDialogButtonsAlign{
+    text-align: right;
+}

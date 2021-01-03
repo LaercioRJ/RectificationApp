@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 
 import Map from 'ol/Map';
 import OSM from 'ol/source/OSM';
@@ -20,6 +21,8 @@ import { LayerStorageService } from '../../services/layer-storage.service';
 import { Layer } from '../../classes/layer';
 import { SamplingPoint } from '../../classes/sampling-point';
 
+import { GradientComponent } from '../map-color-customization/gradient/gradient.component';
+
 @Component({
   selector: 'app-mapping',
   templateUrl: './mapping.component.html',
@@ -27,9 +30,10 @@ import { SamplingPoint } from '../../classes/sampling-point';
 })
 export class MappingComponent implements OnInit {
 
-  constructor(private layerStorage: LayerStorageService) { }
+  constructor(private layerStorage: LayerStorageService,
+              private matDialog: MatDialog) { }
 
-  private map: Map;
+  map: Map;
   samplingPointsColors = [
     [255, 0, 0],
     [0, 255, 0],
@@ -217,5 +221,14 @@ export class MappingComponent implements OnInit {
         fill: new Fill({ color: newColorRgb })
       })
     }));
+  }
+
+  openGradientDialog(): void {
+    const classColors = this.samplingPointsColors;
+    const mapGradientDialog = this.matDialog.open(GradientComponent, {
+      width: '35vw',
+      disableClose: true,
+      data: { classColors }
+    });
   }
 }

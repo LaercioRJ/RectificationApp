@@ -1,1 +1,24 @@
-<p>gradient works!</p>
+<div class="mainBody">
+    <mat-toolbar color = "primary">
+        <span class="mainTitle">Aplicar Degradê</span>
+    </mat-toolbar>
+    <div class="gradientExampleStrip">
+        <div id="gradientExample1"></div>
+        <div id="gradientExample2"></div>
+        <div id="gradientExample3"></div>
+        <div id="gradientExample4"></div>
+        <div id="gradientExample5"></div>
+    </div>
+    <button mat-button class="colorButton" style = "background-color: red; color: white;"
+        (click) = "applyGradient('red')">Vermelho</button>
+    <button mat-button class="colorButton" style = "background-color: green; color: white;"
+        (click) = "applyGradient('green')">Verde</button>
+    <button mat-button class="colorButton" style = "background-color: blue; color: white;"
+        (click) = "applyGradient('blue')">Azul</button>
+    <button mat-button class="colorButton" style = "background-color: rgb(220, 220, 220); color: black;"
+        (click) = "applyGradient('gray')">Cinza</button>
+</div>
+<div class="closeDialogButtonsAlign">
+    <button mat-raised-button color = "primary" style="margin-right: 0.5vw;" (click) = "closeDialogApplyChanges()">Aplicar</button>
+    <button mat-raised-button color = "primary" (click) = "closeDialogCancelChanges()">Cancelar</button>
+</div>
