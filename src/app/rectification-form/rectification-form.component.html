@@ -68,10 +68,20 @@
             </mat-card-content>
         </mat-card>
     </mat-card-content>
-    <input #fileInput type="file" (change)="recieveNewArchive($event)" style="display: none;">
-    <button mat-flat-button color = "primary" (click) = "fileInput.click()">Importar arquivo</button>
-    <button mat-flat-button color = "primary" (click) = "goToFileEditor()">Editar arquivo</button>
+    <div>
+
+        <div>
+            <input #fileInput type="file" (change)="recieveNewArchive($event)" style="display: none;">
+            <button mat-flat-button color = "primary" (click) = "fileInput.click()">Importar arquivo</button>
+            <button mat-flat-button color = "primary" (click) = "goToFileEditor()">Editar arquivo</button>
+            <button mat-flat-button color = "primary">Exportar zona de manejo</button>
+        </div>
+
+        <div>
+
+        </div>
+    </div>
     <div style="text-align: center;">
-        <button color = 'primary' (click) = "executeRectification()" mat-raised-button>Executar retificação</button>
+        <button color = 'primary' [disabled] = "fileName === '--'" (click) = "executeRectification()" mat-raised-button>Executar retificação</button>
     </div>
 </mat-card>

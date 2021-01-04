@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
+import { LayerExportingService } from '../services/layer-exporting.service';
 import { LayerImportingService } from '../services/layer-importing.service';
 import { MessageDeliveryService } from '../services/message-delivery.service';
 import { ServerConnectionService } from '../services/server-connection.service';
@@ -13,7 +14,8 @@ import { ResponseToLayerService } from '../services/response-to-layer.service';
 })
 export class RectificationFormComponent implements OnInit {
 
-  constructor(private layerImporting: LayerImportingService,
+  constructor(private layerExporting: LayerExportingService,
+              private layerImporting: LayerImportingService,
               private messageDelivery: MessageDeliveryService,
               private responseConvertion: ResponseToLayerService,
               private router: Router,

@@ -230,5 +230,16 @@ export class MappingComponent implements OnInit {
       disableClose: true,
       data: { classColors }
     });
+
+    mapGradientDialog.afterClosed().subscribe(result => {
+      if (result) {
+        this.samplingPointsColors = result.data;
+        /*for (let i = 0; i < 6; i++) {
+
+        }*/
+        this.updateMap();
+        this.changeSamplingPointColor(this.selectedSamplingPointId, this.samplingPointsColors[6]);
+      }
+    });
   }
 }
