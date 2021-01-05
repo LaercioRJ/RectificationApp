@@ -45,3 +45,6 @@ mat-radio-button{
     visibility: hidden;
     width: 12%;
 }
+mat-progress-bar{
+    margin-top: 1vh;
+}

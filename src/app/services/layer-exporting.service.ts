@@ -61,7 +61,7 @@ export class LayerExportingService {
     return file;
   }
 
-  downloadFile(file: HTMLAnchorElement): void {
+  private downloadFile(file: HTMLAnchorElement): void {
     document.body.appendChild(file);
     file.click();
     document.body.removeChild(file);

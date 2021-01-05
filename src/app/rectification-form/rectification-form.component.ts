@@ -36,6 +36,8 @@ export class RectificationFormComponent implements OnInit {
   fileSize = 0;
   fileName = '--';
 
+  loadBarState = 'none';
+
   ngOnInit(): void {
   }
 
@@ -86,6 +88,7 @@ export class RectificationFormComponent implements OnInit {
     let kSize: number;
     let rMethod: string;
     let iteration: number;
+    this.loadBarState = 'block';
 
     switch (this.selectedKernelFormat) {
       case 'Retangular':
@@ -140,6 +143,7 @@ export class RectificationFormComponent implements OnInit {
 
     this.serverConnection.consumeRectification(kFormat, kSize, rMethod, iteration).subscribe(result => {
       this.responseConvertion.convertResponseToLayer(result.body);
+      this.loadBarState = 'none';
       this.router.navigateByUrl('/mapeamento/0');
     },
       err => {

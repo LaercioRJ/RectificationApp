@@ -84,4 +84,6 @@
     <div style="text-align: center;">
         <button color = 'primary' [disabled] = "fileName === '--'" (click) = "executeRectification()" mat-raised-button>Executar retificação</button>
     </div>
+    <mat-progress-bar [ngStyle]="{display: loadBarState}" mode="indeterminate"></mat-progress-bar>
 </mat-card>
+<br>

@@ -1,0 +1,30 @@
+.tableCard{
+    width: 65%;
+    margin-left: 17.5%;
+    margin-top: 2vh;
+    background-color: whitesmoke;
+    margin-bottom: 2vh;
+}
+.tableTitle{
+    font-size: 200%;
+}
+.mainMatCardContent{
+    text-align: center;
+}
+.layerInfo{
+    text-align: center;
+}
+table{
+    width: 90%;
+    margin-left: 5%;
+    margin-top: 1vh;
+}
+.mat-header-cell{
+    text-align: center;
+}
+.tableHeader{
+    font-size: large;
+}
+.tableCell{
+    width: 25%;
+}

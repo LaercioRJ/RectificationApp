@@ -16,6 +16,7 @@ import Point from 'ol/geom/Point';
 import Feature from 'ol/Feature';
 import { Style } from 'ol/style';
 
+import { LayerExportingService } from '../../services/layer-exporting.service';
 import { LayerStorageService } from '../../services/layer-storage.service';
 
 import { Layer } from '../../classes/layer';
@@ -30,7 +31,8 @@ import { GradientComponent } from '../map-color-customization/gradient/gradient.
 })
 export class MappingComponent implements OnInit {
 
-  constructor(private layerStorage: LayerStorageService,
+  constructor(private layerExporting: LayerExportingService,
+              private layerStorage: LayerStorageService,
               private matDialog: MatDialog) { }
 
   map: Map;
@@ -132,7 +134,9 @@ export class MappingComponent implements OnInit {
   }
 
   changeSelectedMap(mapType: string): void {
-    this.unchooseSamplingPoint();
+    if (this.selectedSamplingPointId !== -1) {
+      this.unchooseSamplingPoint();
+    }
     if (mapType === 'Original') {
       this.selectedLayer = this.originalLayer;
       this.updateMap();
@@ -241,5 +245,9 @@ export class MappingComponent implements OnInit {
         this.changeSamplingPointColor(this.selectedSamplingPointId, this.samplingPointsColors[6]);
       }
     });
+  }
+
+  downloadRectifiedLayerTxt(): void {
+    this.layerExporting.exportLayerToFile('Rectified', '.txt');
   }
 }

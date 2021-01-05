@@ -9,16 +9,18 @@ import { MaterialModule } from './material-module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RectificationFormComponent } from './rectification-form/rectification-form.component';
 import { MappingComponent } from './mapping-module/mapping/mapping.component';
-import { ManagementZoneEditorComponent } from './management-zone-editor/management-zone-editor.component';
 import { GradientComponent } from './mapping-module/map-color-customization/gradient/gradient.component';
+import { EditorTableComponent } from './management-zone-editor/editor-table/editor-table.component';
+import { SaveLayerAlterationsComponent } from './management-zone-editor/save-layer-alterations/save-layer-alterations.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     RectificationFormComponent,
     MappingComponent,
-    ManagementZoneEditorComponent,
-    GradientComponent
+    GradientComponent,
+    EditorTableComponent,
+    SaveLayerAlterationsComponent
   ],
   imports: [
     BrowserModule,
