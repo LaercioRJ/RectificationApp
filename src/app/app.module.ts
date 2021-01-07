@@ -13,6 +13,8 @@ import { GradientComponent } from './mapping-module/map-color-customization/grad
 import { EditorTableComponent } from './management-zone-editor/editor-table/editor-table.component';
 import { SaveLayerAlterationsComponent } from './management-zone-editor/save-layer-alterations/save-layer-alterations.component';
 
+import { SaveBeforeLeave } from './guards/save-before-leave';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -31,7 +33,7 @@ import { SaveLayerAlterationsComponent } from './management-zone-editor/save-lay
     MaterialModule,
     ReactiveFormsModule
   ],
-  providers: [GradientComponent],
+  providers: [GradientComponent, SaveBeforeLeave],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

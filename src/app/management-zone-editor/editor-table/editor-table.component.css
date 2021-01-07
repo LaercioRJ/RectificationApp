@@ -28,3 +28,31 @@ table{
 .tableCell{
     width: 25%;
 }
+.subtitle{
+    font-size: large;
+    color: black;
+    margin-left: 6%;
+}
+.subtitleAndEditButton{
+    display: flex;
+    justify-content: space-between;
+}
+mat-slide-toggle{
+    color: rgb(72, 92, 207);
+}
+.invalidInput{
+    text-align: center;
+    background-color: rgb(255, 235, 235);
+    color: red;
+}
+.invalidInput:hover{
+    background-color: rgb(255, 215, 215);
+}
+.validInput{
+    text-align: center;
+    background-color: white;
+    color: rgb(72, 92, 207);
+}
+.validInput:hover{
+    background-color: rgb(243, 243, 243);
+}

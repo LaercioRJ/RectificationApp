@@ -1,1 +1,13 @@
-<p>save-layer-alterations works!</p>
+<mat-toolbar color = "primary">
+    <span class = "dialogTitle">Salvar Alterações</span>
+</mat-toolbar>
+<br>
+<mat-card class="dialogMatCard">
+    <mat-radio-group [(ngModel)] = "selectedOption">
+        <mat-radio-button *ngFor="let option of saveOptions" [value] = "option" color = "primary">
+            {{option}}
+            <br>
+        </mat-radio-button>
+    </mat-radio-group>
+    <button mat-flat-button color = "primary" (click) = "finishEditing()">Confirmar</button>
+</mat-card>

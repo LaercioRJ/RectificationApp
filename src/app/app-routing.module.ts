@@ -5,10 +5,12 @@ import { EditorTableComponent } from './management-zone-editor/editor-table/edit
 import { MappingComponent } from './mapping-module/mapping/mapping.component';
 import { RectificationFormComponent } from './rectification-form/rectification-form.component';
 
+import { SaveBeforeLeave } from './guards/save-before-leave';
+
 const routes: Routes = [
   { path: '', component: RectificationFormComponent },
   { path: 'mapeamento/:mode', component: MappingComponent },
-  { path: 'edicao', component: EditorTableComponent }
+  { path: 'edicao', component: EditorTableComponent, canDeactivate: [SaveBeforeLeave] }
 ];
 
 @NgModule({

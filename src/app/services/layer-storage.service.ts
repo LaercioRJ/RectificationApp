@@ -10,7 +10,7 @@ export class LayerStorageService {
 
   constructor() { }
 
-  private originalLayer: Layer;
+  private originalLayer: Layer = null;
   private rectifiedLayer: Layer;
 
   storeOriginalLayer(newLayer: Layer): void {
@@ -26,6 +26,13 @@ export class LayerStorageService {
       copiedLayer.samplingPoints.push(copiedSamplingP);
     }
     return copiedLayer;
+  }
+
+  updateOriginalLayer(newSamplingPoints: SamplingPoint[], SPIndexList: number[]): void {
+    // tslint:disable-next-line: prefer-for-of
+    for (let i = 0; i < SPIndexList.length; i++) {
+      this.originalLayer.samplingPoints[SPIndexList[i]].data = newSamplingPoints[SPIndexList[i]].data;
+    }
   }
 
   storeRectifiedLayer(newLayer: Layer): void {

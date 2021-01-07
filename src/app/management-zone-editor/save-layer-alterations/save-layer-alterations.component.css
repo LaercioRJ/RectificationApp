@@ -1,0 +1,18 @@
+.dialogTitle{
+    font-size: x-large;
+    margin-left: 16%;
+}
+.dialogMatCard{
+    background-color: whitesmoke;
+    text-align: center;
+}
+mat-radio-group{
+    display: flex;
+    flex-direction: column;
+    margin-left: 15%;
+    margin-bottom: 2vh;
+}
+mat-radio-button{
+    margin-bottom: 1vh;
+    font-size: medium;
+}
