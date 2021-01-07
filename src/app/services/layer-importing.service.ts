@@ -58,6 +58,7 @@ export class LayerImportingService {
     layer.samplingPoints = this.samplingPoints;
     layer.pointsQuantity = this.samplingPoints.length;
     this.layerStorage.storeOriginalLayer(layer);
+    this.samplingPoints = [];
     this.messageDelivery.showTimedMessage('Layer importada com sucesso!', 2500);
   }
 }

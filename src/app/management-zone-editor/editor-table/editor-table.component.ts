@@ -94,6 +94,29 @@ export class EditorTableComponent implements OnInit {
       disableClose: true,
       data: { alteredSamplingPoints, alteredSamplingPointsIndex }
     });
+
+    dialogRef.afterClosed().subscribe(result => {
+      this.wasEdited = false;
+      this.validAlteredSPIndex = [];
+      this.invalidAlteredSPIndex = [];
+      if (result.resetTableContent === true) {
+        this.deleteAterations();
+      }
+    });
+  }
+
+  deleteAterations(): void {
+    this.layer.samplingPoints = this.layerStorage.getOriginalLayer().samplingPoints;
+    this.refreshTablePage();
+  }
+
+  refreshTablePage(): void {
+    if ((this.exhibitedUpperIndex === this.layer.pointsQuantity) && ((this.layer.pointsQuantity % this.quantityExhibitedSP) !== 0)) {
+      this.exhibitedUpperIndex = this.exhibitedUpperIndex - (this.layer.pointsQuantity % this.quantityExhibitedSP);
+    } else {
+      this.exhibitedUpperIndex = this.exhibitedUpperIndex - this.quantityExhibitedSP;
+    }
+    this.tablePaginatorNextPage();
   }
 
   tablePaginatorPreviousPage(): void {
@@ -114,17 +137,19 @@ export class EditorTableComponent implements OnInit {
   editDataInput(event: any, samplingPointIndex: number): void {
     this.wasEdited = true;
     const tableSPIndex: number = this.getTableSPIndex(samplingPointIndex);
+    console.log(tableSPIndex);
     const cleanInput: boolean = this.validateNewSamplingValue(event.target.value);
     this.storeValidOrInvalidValues(cleanInput, tableSPIndex);
     this.layer.samplingPoints[tableSPIndex].data = Number(event.target.value);
   }
 
   getTableSPIndex(pageSPIndex: number): number {
-    if (this.exhibitedUpperIndex !== this.layer.pointsQuantity) {
-      return (this.exhibitedUpperIndex - this.quantityExhibitedSP) + pageSPIndex;
-    } else {
-      return (this.exhibitedUpperIndex - (this.layer.pointsQuantity % this.quantityExhibitedSP)) + pageSPIndex;
+    if ((this.layer.pointsQuantity % this.quantityExhibitedSP) !== 0) {
+      if (this.layer.pointsQuantity === this.exhibitedUpperIndex) {
+        return (this.exhibitedUpperIndex - (this.layer.pointsQuantity % this.quantityExhibitedSP)) + pageSPIndex;
+      }
     }
+    return (this.exhibitedUpperIndex - this.quantityExhibitedSP) + pageSPIndex;
   }
 
   validateNewSamplingValue(newValue: number): boolean {
