@@ -1,0 +1,97 @@
+<mat-toolbar color = "primary">
+    <span class="mainTitle" *ngIf="classNumber !== 6">Alterar cor da classe {{classNumber}}</span>
+    <span class="mainTitle" *ngIf="classNumber === 6">Alterar cor do seletor</span>
+</mat-toolbar>
+<div class="mainBody">
+    <br>
+    <span class = "secondaryTitle">Cor Selecionada:</span>
+    <div class = "rectangleColorExample" id = "rectangleColorExample"></div>
+    <mat-divider></mat-divider>
+    <span class = "secondaryTitle">Cores Predefinidas</span>
+    <br>
+    <br>
+    <button mat-button class="colorButton" style="background-color: darkred; color: white; font-size: 80%;"
+        (click) = "alterClassColor(139, 0, 0)">Vermelho E.</button>
+    <button mat-button class="colorButton" style="background-color: rgb(255, 115, 0); color: white;"
+        (click) = "alterClassColor(255, 115, 0)">Laranja E.</button>
+    <button mat-button class="colorButton" style="background-color: rgb(0, 76, 0); color: white;"
+        (click) = "alterClassColor(0, 76, 0)">Verde E.</button>
+    <button mat-button class="colorButton" style="background-color: darkblue; color: white;"
+        (click) = "alterClassColor(0, 0, 139)">Azul E.</button>
+    <br>
+    <br>
+    <button mat-button class="colorButton" style="background-color: red; color: white;"
+        (click) = "alterClassColor(255, 0, 0)">Vermelho</button>
+    <button mat-button class="colorButton" style="background-color: orange; color: white;"
+        (click) = "alterClassColor(255, 165, 0)">Laranja</button>
+    <button mat-button class="colorButton" style="background-color: green; color: white;"
+        (click) = "alterClassColor(0, 128, 0)">Verde</button>
+    <button mat-button class="colorButton" style="background-color: blue; color: white;"
+        (click) = "alterClassColor(0, 0, 255)">Azul</button>
+    <br>
+    <br>
+    <button mat-button class="colorButton" style="background-color: rgb(255, 125, 125); font-size: 80%;"
+        (click) = "alterClassColor(255, 125, 125)">Vermelho C.</button>
+    <button mat-button class="colorButton" style="background-color: yellow;"
+        (click) = "alterClassColor(255, 255, 0)">Amarelo</button>
+    <button mat-button class="colorButton" style="background-color: lightgreen;"
+        (click) = "alterClassColor(144, 238, 144)">Verde C.</button>
+    <button mat-button class="colorButton" style="background-color: lightblue;"
+        (click) = "alterClassColor(173, 216, 230)">Azul C.</button>
+    <br>
+    <br>
+    <button mat-button class="colorButton" style="background-color: rgb(255, 169, 169);"
+        (click) = "alterClassColor(255, 169, 169)">Coral C.</button>
+    <button mat-button class="colorButton" style="background-color: lightsalmon; font-size: 90%;"
+        (click) = "alterClassColor(255, 160, 122)">Salmão C.</button>
+    <button mat-button class="colorButton" style="background-color: aquamarine; font-size: 80%;"
+        (click) = "alterClassColor(127, 255, 212)">Aquamarine</button>
+    <button mat-button class="colorButton" style="background-color: cyan;"
+        (click) = "alterClassColor(0, 255, 255)">Ciano</button>
+    <mat-divider></mat-divider>
+    <span class="secondaryTitle">Escala RGB</span>
+    <br>
+    <br>
+    <div>
+        <mat-form-field class = "rgbInfo" appearance="outline">
+            <mat-label>Vermelho</mat-label>
+            <input matInput [value]="redRgbValue" color="primary" readonly>
+        </mat-form-field>
+        <mat-form-field class = "rgbInfo" appearance="outline">
+            <mat-label>Verde</mat-label>
+            <input matInput [value]="greenRgbValue" color="primary" readonly>
+        </mat-form-field>
+        <mat-form-field class="rgbInfo" appearance="outline">
+            <mat-label>Azul</mat-label>
+            <input matInput [value]="blueRgbValue" color="primary" readonly>
+        </mat-form-field>
+        <mat-slider 
+            thumbLabel
+            [max] = "255"
+            [min] = "0"
+            [step] = "1"
+            [value] = "redSliderValue"
+            (input) = "changeRgbSlidersValue($event, 0)"
+        ></mat-slider>
+        <mat-slider 
+            thumbLabel
+            [max] = "255"
+            [min] = "0"
+            [step] = "1"
+            [value] = "greenSliderValue"
+            (input) = "changeRgbSlidersValue($event, 1)"
+        ></mat-slider>
+        <mat-slider 
+            thumbLabel
+            [max] = "255"
+            [min] = "0"
+            [step] = "1"
+            [value] = "blueSliderValue"
+            (input) = "changeRgbSlidersValue($event, 2)"
+        ></mat-slider>
+    </div>
+</div>
+<div class = "exitButtonsPosition">
+    <button color = "primary" style="margin-right: 3%;" (click) = "closeDialogApplyChanges()" mat-raised-button>Aplicar</button>
+    <button color = "primary" (click) = "closeDialogCancelChanges()" mat-raised-button>Cancelar</button>
+</div>

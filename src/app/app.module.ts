@@ -14,6 +14,7 @@ import { EditorTableComponent } from './management-zone-editor/editor-table/edit
 import { SaveLayerAlterationsComponent } from './management-zone-editor/save-layer-alterations/save-layer-alterations.component';
 
 import { SaveBeforeLeave } from './guards/save-before-leave';
+import { PerClassCustomizationComponent } from './mapping-module/map-color-customization/per-class-customization/per-class-customization.component';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,8 @@ import { SaveBeforeLeave } from './guards/save-before-leave';
     MappingComponent,
     GradientComponent,
     EditorTableComponent,
-    SaveLayerAlterationsComponent
+    SaveLayerAlterationsComponent,
+    PerClassCustomizationComponent
   ],
   imports: [
     BrowserModule,

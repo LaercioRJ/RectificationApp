@@ -1,0 +1,42 @@
+.mainTitle{
+    font-size: 130%;
+    margin-left: 20%;
+}
+.secondaryTitle{
+    font-size: 145%;
+}
+.mainBody{
+    margin-bottom: 0.5%;
+}
+.rectangleColorExample{
+    width: 31%;
+    margin-left: 31%;
+    height: 20px;
+    margin-top: 1vh;
+    margin-bottom: 0.7vh;
+}
+mat-divider{
+    margin-top: 1.1vh;
+    margin-bottom: 1.1vh;
+    border-color: rgb(148, 148, 148);
+    border-width: 0.1vw;
+}
+.colorButton{
+    width: 22%;
+    margin-left: 3%;
+    font-size: 100%;
+}
+input{
+    text-align: center;
+}
+.rgbInfo{
+    width: 31%;
+    margin-right: 2%;
+}
+.mat-slider{
+    width: 33%;
+}
+.exitButtonsPosition{
+    margin-top: 2%;
+    text-align: right;
+}

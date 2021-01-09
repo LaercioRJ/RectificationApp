@@ -23,6 +23,21 @@ import { Layer } from '../../classes/layer';
 import { SamplingPoint } from '../../classes/sampling-point';
 
 import { GradientComponent } from '../map-color-customization/gradient/gradient.component';
+import { PerClassCustomizationComponent } from '../map-color-customization/per-class-customization/per-class-customization.component';
+
+export interface LegendData {
+  color: string;
+  class: string;
+}
+
+const TABLE_DATA: LegendData[] = [
+  {color: '', class: '1'},
+  {color: '', class: '2'},
+  {color: '', class: '3'},
+  {color: '', class: '4'},
+  {color: '', class: '5'},
+  {color: '', class: 'Seletor'}
+];
 
 @Component({
   selector: 'app-mapping',
@@ -37,11 +52,11 @@ export class MappingComponent implements OnInit {
 
   map: Map;
   samplingPointsColors = [
-    [255, 0, 0],
-    [0, 255, 0],
     [0, 0, 255],
     [255, 255, 0],
-    [0, 255, 255],
+    [255, 0, 0],
+    [0, 128, 0],
+    [139, 0, 0],
     [0, 0, 0], // this is the color for the selected samplingPoint
     [0, 0, 0] // this is the color for the gradient applied previously
   ];
@@ -59,6 +74,9 @@ export class MappingComponent implements OnInit {
   SPDataFromOtherLayer = 0;
   mapTypes: string[] = ['Original', 'Retificado'];
   selectedMapType = 'Original';
+
+  dataSource = TABLE_DATA;
+  displayedColumns: string[] = ['Cor', 'Classe'];
 
   ngOnInit(): void {
     this.originalLayer = this.layerStorage.getOriginalLayer();
@@ -219,6 +237,7 @@ export class MappingComponent implements OnInit {
   }
 
   changeSamplingPointColor(featureId: number, newColorRgb: number[]): void {
+    console.log('Aqui');
     this.vectorLayerFeatures[featureId].setStyle(new Style({
       image: new Circle({
         radius: 3,
@@ -245,6 +264,39 @@ export class MappingComponent implements OnInit {
         this.changeSamplingPointColor(this.selectedSamplingPointId, this.samplingPointsColors[6]);
       }
     });
+  }
+
+  openPerClassCustomizationDialog(classNumber: number): void {
+    const classColor = this.samplingPointsColors[classNumber - 1];
+    const perClassCustomizationDialog = this.matDialog.open(PerClassCustomizationComponent, {
+      width: '35vw',
+      data: { classColor, classNumber }
+    });
+
+    perClassCustomizationDialog.afterClosed().subscribe(result => {
+      if (result) {
+        this.samplingPointsColors[classNumber - 1] = result.data;
+        if (classNumber !== 6) {
+          // caso for alteração do seletor
+          this.updateMap();
+        }
+        if (this.selectedSamplingPointId !== -1) {
+          const color = this.getClassColor(this.selectedSPData);
+          this.changeSamplingPointColor(this.selectedSamplingPointId, this.samplingPointsColors[5]);
+        }
+        this.refreshLegendTable(classNumber);
+      }
+    });
+  }
+
+  refreshLegendTable(classNumber: number): void {
+    const rgbCode = 'rgb(' + this.samplingPointsColors[classNumber - 1][0].toString() + ', ' +
+      this.samplingPointsColors[classNumber - 1][1].toString() + ', ' + this.samplingPointsColors[classNumber - 1][2].toString() + ')';
+    if (classNumber === 6) {
+      document.getElementById('circleSeletor').style.background = rgbCode;
+    } else {
+      document.getElementById('circle'.concat(String(classNumber))).style.background = rgbCode;
+    }
   }
 
   downloadRectifiedLayerTxt(): void {

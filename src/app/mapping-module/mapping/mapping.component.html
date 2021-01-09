@@ -59,6 +59,27 @@
                     </mat-panel-title>
                 </mat-expansion-panel-header>
 
+                <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+                    <ng-container matColumnDef="Cor">
+                        <th mat-header-cell *matHeaderCellDef>Cor&nbsp;&nbsp;&nbsp;&nbsp;</th>
+                        <td mat-cell *matCellDef="let element">
+                            <div id = 'circle{{element.class}}'>
+                                {{element.color}}
+                            </div>
+                        </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="Classe">
+                        <th mat-header-cell *matHeaderCellDef>&nbsp;&nbsp;&nbsp;Classe</th>
+                        <td mat-cell *matCellDef="let element; let i = index">
+                            <button mat-stroked-button (click) = "openPerClassCustomizationDialog(i + 1)">{{element.class}}</button>
+                        </td>
+                    </ng-container>
+
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+                </table>
+
                 <button mat-flat-button color = "primary" (click) = "openGradientDialog()">Gradiente</button>
             </mat-expansion-panel>
         </mat-accordion>
