@@ -3,7 +3,7 @@
     margin-left: 17.5%;
     margin-top: 2vh;
     background-color: whitesmoke;
-    margin-bottom: 2vh;
+    margin-bottom: 1vh;
 }
 .formTitle{
     font-size: 200%;
@@ -39,12 +39,18 @@ mat-radio-button{
 }
 .customIterationInput{
     text-align: center;
-    width: 12%;
+    width: 8%;
 }
 .customIterationInputHidden{
     visibility: hidden;
     width: 12%;
 }
 mat-progress-bar{
+    margin-top: 1vh;
+}
+.mainButton{
+    color: white;
+    background-color: rgb(72, 92, 207);
+    font-size: 150%;
     margin-top: 1vh;
 }

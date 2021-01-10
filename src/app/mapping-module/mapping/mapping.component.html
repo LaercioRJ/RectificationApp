@@ -80,10 +80,24 @@
                     <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
                 </table>
 
-                <button mat-flat-button color = "primary" (click) = "openGradientDialog()">Gradiente</button>
+                <button mat-button class="gradientButton" (click) = "openGradientDialog()">
+                    <span class="material-icons">
+                        palette
+                    </span>
+                    Degradê
+                </button>
             </mat-expansion-panel>
         </mat-accordion>
-        <button mat-flat-button color = "primary" (click) = "downloadRectifiedLayerTxt()">Download .txt</button>
+        <button mat-button color = "primary" class="downloadJpgButton" (click) = "downloadMapJpg()">
+            <span class="material-icons">
+                vertical_align_bottom
+            </span>
+            Download Mapa
+        </button>
+
+        <button mat-button color = "primary" class="downloadJpgButton" (click) = "downloadRectifiedTxt()">
+            Layer Retificada .txt
+        </button>
     </mat-sidenav>
     
     <mat-sidenav-content>

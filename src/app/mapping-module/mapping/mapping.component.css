@@ -37,7 +37,7 @@
     margin-left: 16%;
 }
 table{
-    width: 100%;
+    max-width: 100%;
 }
 #circle1{
     background: blue;
@@ -78,4 +78,14 @@ table{
 }
 .classColumn{
     margin-left: 10vw;
+}
+.downloadJpgButton{
+    background-color: rgb(72, 92, 207);
+    color: white;
+    margin-top: 1vh;
+    border-radius: 1vh;
+}
+.gradientButton{
+    margin-top: 2vh;
+    background-color: rgb(153, 200, 253);
 }

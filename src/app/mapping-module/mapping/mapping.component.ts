@@ -255,11 +255,15 @@ export class MappingComponent implements OnInit {
     });
 
     mapGradientDialog.afterClosed().subscribe(result => {
-      if (result) {
+      if (result && (this.samplingPointsColors !== result.data)) {
         this.samplingPointsColors = result.data;
-        /*for (let i = 0; i < 6; i++) {
-
-        }*/
+        for (let i = 0; i < 5; i++) {
+          this.refreshLegendTable(i + 1);
+        }
+        if (this.selectedSamplingPointId !== -1) {
+          const color = this.getClassColor(this.selectedSPData);
+          this.changeSamplingPointColor(this.selectedSamplingPointId, this.samplingPointsColors[5]);
+        }
         this.updateMap();
         this.changeSamplingPointColor(this.selectedSamplingPointId, this.samplingPointsColors[6]);
       }
@@ -299,7 +303,39 @@ export class MappingComponent implements OnInit {
     }
   }
 
-  downloadRectifiedLayerTxt(): void {
+  downloadRectifiedTxt(): void {
     this.layerExporting.exportLayerToFile('Rectified', '.txt');
+  }
+
+  downloadMapJpg(): void {
+    // tslint:disable-next-line: only-arrow-functions
+    this.map.once('rendercomplete', function() {
+      const mapCanvas = document.createElement('canvas');
+      mapCanvas.width = 1400;
+      mapCanvas.height = 700;
+      const mapContext = mapCanvas.getContext('2d');
+      // tslint:disable-next-line: only-arrow-functions
+      Array.prototype.forEach.call(document.querySelectorAll('.ol-layer canvas'), function(canvas) {
+        if (canvas.width > 0) {
+          const opacity = canvas.parentNode.style.opacity;
+          mapContext.globalAlpha = opacity === '' ? 1 : Number(opacity);
+          const transformation = canvas.style.transform;
+          const matrix = transformation.match(/^matrix\(([^\(]*)\)$/)[1].split(',').map(Number);
+          CanvasRenderingContext2D.prototype.setTransform.apply(mapContext, matrix);
+          mapContext.drawImage(canvas, 0, 0);
+        }
+      });
+      if (navigator.msSaveBlob) {
+      } else {
+        const element = document.createElement('a');
+        element.setAttribute('href', mapCanvas.toDataURL());
+        element.setAttribute('download', 'Mapa Zona de Manejo');
+        element.style.display = 'none';
+        document.body.appendChild(element);
+        element.click();
+        document.body.removeChild(element);
+      }
+    });
+    this.map.renderSync();
   }
 }

@@ -82,7 +82,12 @@
         </div>
     </div>
     <div style="text-align: center;">
-        <button color = 'primary' [disabled] = "fileName === '--'" (click) = "executeRectification()" mat-raised-button>Executar retificação</button>
+        <button class="mainButton" [disabled] = "fileName === '--'" (click) = "executeRectification()" mat-raised-button>
+            <span class="material-icons">
+                miscellaneous_services
+            </span>
+            Executar Retificação
+        </button>
     </div>
     <mat-progress-bar [ngStyle]="{display: loadBarState}" mode="indeterminate"></mat-progress-bar>
 </mat-card>
