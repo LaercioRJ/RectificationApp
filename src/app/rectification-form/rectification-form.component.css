@@ -54,3 +54,29 @@ mat-progress-bar{
     font-size: 150%;
     margin-top: 1vh;
 }
+.fileImportAndInformation{
+    margin-left: 16%;
+    vertical-align: top;
+}
+.actions{
+    overflow: auto;
+    display: inline-block;
+    max-width: 100%;
+    overflow: hidden;
+    margin-bottom: 2vh;
+}
+.simpleButtons{
+    background-color: rgb(153, 200, 253);
+    margin-bottom: 1vh;
+}
+.fileInformation{
+    overflow: auto;
+    display: inline-block;
+    max-width: 100%;
+    overflow: hidden;
+    margin-left: 5%;
+}
+.fileInformationFields{
+    text-align: center;
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+}
