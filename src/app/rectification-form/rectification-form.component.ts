@@ -1,11 +1,16 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { MatBottomSheet } from '@angular/material/bottom-sheet';
 
-import { LayerExportingService } from '../services/layer-exporting.service';
 import { LayerImportingService } from '../services/layer-importing.service';
+import { LayerStorageService } from '../services/layer-storage.service';
 import { MessageDeliveryService } from '../services/message-delivery.service';
-import { ServerConnectionService } from '../services/server-connection.service';
 import { ResponseToLayerService } from '../services/response-to-layer.service';
+import { ServerConnectionService } from '../services/server-connection.service';
+
+import { SelectExportedExtensionComponent } from '../extra-components/select-exported-extension/select-exported-extension.component';
+
+import { Layer } from '../classes/layer';
 
 @Component({
   selector: 'app-rectification-form',
@@ -14,8 +19,9 @@ import { ResponseToLayerService } from '../services/response-to-layer.service';
 })
 export class RectificationFormComponent implements OnInit {
 
-  constructor(private layerExporting: LayerExportingService,
+  constructor(private bottomSheet: MatBottomSheet,
               private layerImporting: LayerImportingService,
+              private layerStorage: LayerStorageService,
               private messageDelivery: MessageDeliveryService,
               private responseConvertion: ResponseToLayerService,
               private router: Router,
@@ -35,10 +41,28 @@ export class RectificationFormComponent implements OnInit {
   fileExtension = '--';
   fileSize = 0;
   fileName = '--';
+  fileSamplingPointsQuantity = 0;
 
   loadBarState = 'none';
 
   ngOnInit(): void {
+    this.fetchInsertedLayer();
+  }
+
+  fetchInsertedLayer(): void {
+    if (this.layerStorage.originalLayerIsStored() === true) {
+      this.fileExtension = this.layerStorage.getOriginalLayer().fileExtension;
+      this.fileName = this.layerStorage.getOriginalLayer().fileName;
+      this.fileSize = this.layerStorage.getOriginalLayer().fileSize;
+      this.fileSamplingPointsQuantity = this.layerStorage.getOriginalLayer().pointsQuantity;
+    }
+  }
+
+  exportOriginalLayer(): void {
+    const layerType = 'Original';
+    const extensionSelectorRef = this.bottomSheet.open(SelectExportedExtensionComponent, {
+      data: { layerType }
+    });
   }
 
   validateIterationNumber(): void{
@@ -55,27 +79,11 @@ export class RectificationFormComponent implements OnInit {
     }
   }
 
-  recieveNewArchive(event: any): void {
+  async recieveNewArchive(event: any): Promise<void> {
     if (event.target.files && event.target.files[0]) {
       const archive: File = event.target.files[0];
-      const fileIsRight = this.ArchiveTypeIsCorrect(archive.name);
-      if (fileIsRight) {
-        this.fileSize = archive.size;
-        this.fileName = archive.name.slice(0, archive.name.length - 4);
-        this.layerImporting.fileToLayer(archive);
-      } else {
-        this.messageDelivery.showTimedMessage('Formato de arquivo não suportado, por favor use .txt ou .csv.', 2800);
-      }
-    }
-  }
-
-  private ArchiveTypeIsCorrect(fileName: string): boolean {
-    const extension = fileName.slice(fileName.length - 4, fileName.length);
-    if (extension === '.txt' || extension === '.csv') {
-      this.fileExtension = extension;
-      return true;
-    } else {
-      return false;
+      const layer: Layer = await this.layerImporting.fileToLayer(archive);
+      console.log(layer);
     }
   }
 

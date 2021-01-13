@@ -6,6 +6,9 @@ export class Layer {
     header3: string;
     samplingPoints: SamplingPoint[] = [];
     pointsQuantity: number;
+    fileName: string;
+    fileSize: number;
+    fileExtension: string;
     constructor(header1: string, header2: string, header3: string) {
         this.header1 = header1;
         this.header2 = header2;

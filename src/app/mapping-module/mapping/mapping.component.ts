@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { MatBottomSheet } from '@angular/material/bottom-sheet';
 
 import Map from 'ol/Map';
 import OSM from 'ol/source/OSM';
@@ -24,6 +25,7 @@ import { SamplingPoint } from '../../classes/sampling-point';
 
 import { GradientComponent } from '../map-color-customization/gradient/gradient.component';
 import { PerClassCustomizationComponent } from '../map-color-customization/per-class-customization/per-class-customization.component';
+import { SelectExportedExtensionComponent } from '../../extra-components/select-exported-extension/select-exported-extension.component';
 
 export interface LegendData {
   color: string;
@@ -46,7 +48,8 @@ const TABLE_DATA: LegendData[] = [
 })
 export class MappingComponent implements OnInit {
 
-  constructor(private layerExporting: LayerExportingService,
+  constructor(private bottomSheet: MatBottomSheet,
+              private layerExporting: LayerExportingService,
               private layerStorage: LayerStorageService,
               private matDialog: MatDialog) { }
 
@@ -151,6 +154,13 @@ export class MappingComponent implements OnInit {
     }
   }
 
+  exportLayer(): void {
+    const layerType = 'Retificada';
+    this.bottomSheet.open(SelectExportedExtensionComponent, {
+      data: { layerType }
+    });
+  }
+
   changeSelectedMap(mapType: string): void {
     if (this.selectedSamplingPointId !== -1) {
       this.unchooseSamplingPoint();
@@ -237,7 +247,6 @@ export class MappingComponent implements OnInit {
   }
 
   changeSamplingPointColor(featureId: number, newColorRgb: number[]): void {
-    console.log('Aqui');
     this.vectorLayerFeatures[featureId].setStyle(new Style({
       image: new Circle({
         radius: 3,
@@ -301,10 +310,6 @@ export class MappingComponent implements OnInit {
     } else {
       document.getElementById('circle'.concat(String(classNumber))).style.background = rgbCode;
     }
-  }
-
-  downloadRectifiedTxt(): void {
-    this.layerExporting.exportLayerToFile('Rectified', '.txt');
   }
 
   downloadMapJpg(): void {

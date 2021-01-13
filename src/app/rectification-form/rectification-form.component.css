@@ -79,4 +79,5 @@ mat-progress-bar{
 .fileInformationFields{
     text-align: center;
     font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    width: 12vw;
 }

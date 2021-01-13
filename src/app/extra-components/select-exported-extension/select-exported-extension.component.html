@@ -1,0 +1,15 @@
+<div class="mainTitle">
+    <span>Por favor, escolha uma extensão de arquivo</span>
+</div>
+<br>
+<mat-nav-list>
+    <a class="listOption" mat-list-item (click) = "exportLayer('.csv')">
+        <span mat-line>Arquivo .CSV</span>
+      </a>
+    <a class="listOption" mat-list-item (click) = "exportLayer('.txt')">
+        <span mat-line>Arquivo .TXT</span>
+    </a>
+    <a class="listOption" mat-list-item (click) = "closeBottomSheet()">
+        <span mat-line>Cancelar</span>
+    </a>
+</mat-nav-list>

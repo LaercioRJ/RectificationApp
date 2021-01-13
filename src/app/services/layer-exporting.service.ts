@@ -17,9 +17,10 @@ export class LayerExportingService {
       layer = this.layerStorage.getOriginalLayer();
     } else {
       layer = this.layerStorage.getRectifiedLayer();
+      console.log(layer.fileName);
     }
     const fileContent = this.convertLayerToString(layer);
-    const file = this.createFile(fileContent, archiveExtension);
+    const file = this.createFile(fileContent, archiveExtension, layer.fileName, layerType);
     this.downloadFile(file);
   }
 
@@ -49,13 +50,13 @@ export class LayerExportingService {
     return content;
   }
 
-  private createFile(content: any, archiveType: string): HTMLAnchorElement {
+  private createFile(content: any, archiveType: string, layerName: string, layertype: string): HTMLAnchorElement {
     const file = document.createElement('a');
     file.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(content));
     if (archiveType === '.txt') {
-      file.setAttribute('download', 'ZonaDeManejo.txt');
+      file.setAttribute('download', layerName.concat('-').concat(layertype).concat('.txt'));
     } else {
-      file.setAttribute('download', 'ZonaDeManejo.csv');
+      file.setAttribute('download', layerName.concat('-').concat(layertype).concat('.csv'));
     }
     file.style.display = 'none';
     return file;
