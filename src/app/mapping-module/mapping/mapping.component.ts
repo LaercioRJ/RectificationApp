@@ -17,11 +17,10 @@ import Point from 'ol/geom/Point';
 import Feature from 'ol/Feature';
 import { Style } from 'ol/style';
 
-import { LayerExportingService } from '../../services/layer-exporting.service';
 import { LayerStorageService } from '../../services/layer-storage.service';
+import { MappingService } from '../services/mapping.service';
 
 import { Layer } from '../../classes/layer';
-import { SamplingPoint } from '../../classes/sampling-point';
 
 import { GradientComponent } from '../map-color-customization/gradient/gradient.component';
 import { PerClassCustomizationComponent } from '../map-color-customization/per-class-customization/per-class-customization.component';
@@ -49,8 +48,8 @@ const TABLE_DATA: LegendData[] = [
 export class MappingComponent implements OnInit {
 
   constructor(private bottomSheet: MatBottomSheet,
-              private layerExporting: LayerExportingService,
               private layerStorage: LayerStorageService,
+              private mappingService: MappingService,
               private matDialog: MatDialog) { }
 
   map: Map;
@@ -84,74 +83,7 @@ export class MappingComponent implements OnInit {
   ngOnInit(): void {
     this.originalLayer = this.layerStorage.getOriginalLayer();
     this.selectedLayer = this.originalLayer;
-    this.createMap();
-  }
-
-  private createMap(): void {
-    this.populateVectorlayer(this.selectedLayer.samplingPoints);
-
-    this.vectorSource = new VectorSource({
-      features: this.vectorLayerFeatures
-    });
-
-    this.vectorLayer = new Vector({
-      source: this.vectorSource
-    });
-
-    this.map = new Map({
-      target: 'map',
-      controls: defaultControls().extend([
-        new ScaleLine({
-          units: 'metric',
-          minWidth: 100
-        }),
-        new FullScreen({
-          tipLabel: 'Exibir em tela cheia'
-        })
-      ]),
-      interactions: [],
-      layers: [
-        new Tile({
-          source: new OSM()
-        }),
-        this.vectorLayer
-      ],
-      view: new View({
-        center: fromLonLat([this.selectedLayer.samplingPoints[0].coordinates[0], this.selectedLayer.samplingPoints[0].coordinates[1]]),
-        zoom: 5,
-        maxResolution: 120,
-      }),
-    });
-  }
-
-  populateVectorlayer(samplingPoints: SamplingPoint[]): void {
-    for (let i = 0 ; i < samplingPoints.length; i++) {
-      this.vectorLayerFeatures[i] = new Feature({
-        geometry: new Point(fromLonLat([samplingPoints[i].coordinates[0], samplingPoints[i].coordinates[1]]))
-      });
-      this.vectorLayerFeatures[i].setStyle(new Style({
-        image: new Circle({
-          radius: 3,
-          fill: new Fill({ color: this.getClassColor(samplingPoints[i].data) })
-        })
-      }));
-      this.vectorLayerFeatures[i].setId(i);
-    }
-  }
-
-  getClassColor(classNumber: number): number[] {
-    switch (classNumber) {
-      case 1:
-        return this.samplingPointsColors[0];
-      case 2:
-        return this.samplingPointsColors[1];
-      case 3:
-        return this.samplingPointsColors[2];
-      case 4:
-        return this.samplingPointsColors[3];
-      case 5:
-        return this.samplingPointsColors[4];
-    }
+    this.mappingService.renderMap(this.selectedLayer.samplingPoints, this.samplingPointsColors);
   }
 
   exportLayer(): void {
@@ -167,36 +99,19 @@ export class MappingComponent implements OnInit {
     }
     if (mapType === 'Original') {
       this.selectedLayer = this.originalLayer;
-      this.updateMap();
+      this.mappingService.updateMap(this.selectedLayer.samplingPoints, this.samplingPointsColors);
     } else {
       if (this.rectifiedLayer === null) {
         this.rectifiedLayer = this.layerStorage.getRectifiedLayer();
       }
       this.selectedLayer = this.rectifiedLayer;
-      this.updateMap();
+      this.mappingService.updateMap(this.selectedLayer.samplingPoints, this.samplingPointsColors);
     }
-  }
-
-  updateMap(): void {
-    this.populateVectorlayer(this.selectedLayer.samplingPoints);
-
-    this.vectorSource = new VectorSource({
-      features: this.vectorLayerFeatures
-    });
-
-    this.vectorLayer = new Vector({
-      source: this.vectorSource
-    });
-
-    this.map.removeLayer(this.map.getLayers().getArray()[1]);
-    this.map.addLayer(this.vectorLayer);
-    this.map.render();
   }
 
   selectSamplingPoint(clickEvent: Event): void {
     try{
-      const eventPixel = this.map.getEventPixel(clickEvent);
-      const clickedSPId = this.map.getFeaturesAtPixel(eventPixel)[0].getId();
+      const clickedSPId = this.mappingService.getClickedSamplingPointId(clickEvent);
       if (this.selectedSamplingPointId === -1) {
         // there was no sampling point already choosen
         this.chooseNewSamplingPoint(clickedSPId);
@@ -215,7 +130,7 @@ export class MappingComponent implements OnInit {
   }
 
   chooseNewSamplingPoint(chosenSamplingPointId: number): void {
-    this.changeSamplingPointColor(chosenSamplingPointId, this.samplingPointsColors[5]);
+    this.mappingService.changeSamplingPointColor(chosenSamplingPointId, this.samplingPointsColors[5]);
     this.selectedSamplingPointId = chosenSamplingPointId;
     this.selectedSPFirstCoordinate = this.selectedLayer.samplingPoints[chosenSamplingPointId].coordinates[0];
     this.selectedSPSecondCoordinate = this.selectedLayer.samplingPoints[chosenSamplingPointId].coordinates[1];
@@ -233,7 +148,7 @@ export class MappingComponent implements OnInit {
 
   unchooseSamplingPoint(): void {
     const samplingPointClass = this.selectedLayer.samplingPoints[this.selectedSamplingPointId].data;
-    this.changeSamplingPointColor(this.selectedSamplingPointId, this.getClassColor(samplingPointClass));
+    this.mappingService.changeSamplingPointColor(this.selectedSamplingPointId, this.samplingPointsColors[samplingPointClass - 1]);
     this.selectedSPFirstCoordinate = 0;
     this.selectedSPSecondCoordinate = 0;
     this.selectedSPData = 0;
@@ -269,12 +184,12 @@ export class MappingComponent implements OnInit {
         for (let i = 0; i < 5; i++) {
           this.refreshLegendTable(i + 1);
         }
+        this.mappingService.updateMap(this.selectedLayer.samplingPoints, this.samplingPointsColors);
         if (this.selectedSamplingPointId !== -1) {
-          const color = this.getClassColor(this.selectedSPData);
+          console.log('Aqui');
+          const color = this.samplingPointsColors[this.selectedSPData - 1];
           this.changeSamplingPointColor(this.selectedSamplingPointId, this.samplingPointsColors[5]);
         }
-        this.updateMap();
-        this.changeSamplingPointColor(this.selectedSamplingPointId, this.samplingPointsColors[6]);
       }
     });
   }
@@ -291,11 +206,11 @@ export class MappingComponent implements OnInit {
         this.samplingPointsColors[classNumber - 1] = result.data;
         if (classNumber !== 6) {
           // caso for alteração do seletor
-          this.updateMap();
+          this.mappingService.updateMap(this.selectedLayer.samplingPoints, this.samplingPointsColors);
         }
         if (this.selectedSamplingPointId !== -1) {
-          const color = this.getClassColor(this.selectedSPData);
-          this.changeSamplingPointColor(this.selectedSamplingPointId, this.samplingPointsColors[5]);
+          const color = this.samplingPointsColors[this.selectedSPData];
+          this.mappingService.changeSamplingPointColor(this.selectedSamplingPointId, this.samplingPointsColors[5]);
         }
         this.refreshLegendTable(classNumber);
       }
@@ -313,34 +228,6 @@ export class MappingComponent implements OnInit {
   }
 
   downloadMapJpg(): void {
-    // tslint:disable-next-line: only-arrow-functions
-    this.map.once('rendercomplete', function() {
-      const mapCanvas = document.createElement('canvas');
-      mapCanvas.width = 1400;
-      mapCanvas.height = 700;
-      const mapContext = mapCanvas.getContext('2d');
-      // tslint:disable-next-line: only-arrow-functions
-      Array.prototype.forEach.call(document.querySelectorAll('.ol-layer canvas'), function(canvas) {
-        if (canvas.width > 0) {
-          const opacity = canvas.parentNode.style.opacity;
-          mapContext.globalAlpha = opacity === '' ? 1 : Number(opacity);
-          const transformation = canvas.style.transform;
-          const matrix = transformation.match(/^matrix\(([^\(]*)\)$/)[1].split(',').map(Number);
-          CanvasRenderingContext2D.prototype.setTransform.apply(mapContext, matrix);
-          mapContext.drawImage(canvas, 0, 0);
-        }
-      });
-      if (navigator.msSaveBlob) {
-      } else {
-        const element = document.createElement('a');
-        element.setAttribute('href', mapCanvas.toDataURL());
-        element.setAttribute('download', 'Mapa Zona de Manejo');
-        element.style.display = 'none';
-        document.body.appendChild(element);
-        element.click();
-        document.body.removeChild(element);
-      }
-    });
-    this.map.renderSync();
+    this.mappingService.downloadMapJpg();
   }
 }

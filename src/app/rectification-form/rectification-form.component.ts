@@ -83,7 +83,6 @@ export class RectificationFormComponent implements OnInit {
     if (event.target.files && event.target.files[0]) {
       const archive: File = event.target.files[0];
       const layer: Layer = await this.layerImporting.fileToLayer(archive);
-      console.log(layer);
     }
   }
 

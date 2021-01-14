@@ -20,9 +20,7 @@ export class ResponseToLayerService {
       const samplingPoint = new SamplingPoint(response[i].x, response[i].y, response[i].data);
       rectifiedLayer.samplingPoints.push(samplingPoint);
     }
-    console.log(originalLayer.fileName);
     rectifiedLayer.fileName = originalLayer.fileName;
-    console.log(rectifiedLayer.fileName);
     rectifiedLayer.pointsQuantity = rectifiedLayer.samplingPoints.length;
     this.layerStorage.storeRectifiedLayer(rectifiedLayer);
   }
