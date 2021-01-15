@@ -1,19 +1,19 @@
 import { Component, OnInit } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
 import { MatBottomSheet } from '@angular/material/bottom-sheet';
+import { MatDialog } from '@angular/material/dialog';
 
 import Circle from 'ol/style/Circle';
 import Fill from 'ol/style/Fill';
 import { Style } from 'ol/style';
 
-import { LayerStorageService } from '../../services/layer-storage.service';
-import { MappingService } from '../map-services/mapping.service';
+import { LayerStorageService } from 'src/app/services/layer-storage.service';
+import { MappingService } from '../../map-services/mapping.service';
 
-import { Layer } from '../../classes/layer';
+import { Layer } from 'src/app/classes/layer';
 
-import { GradientComponent } from '../map-color-customization/gradient/gradient.component';
-import { PerClassCustomizationComponent } from '../map-color-customization/per-class-customization/per-class-customization.component';
-import { SelectExportedExtensionComponent } from '../../extra-components/select-exported-extension/select-exported-extension.component';
+import { GradientComponent } from '../../map-color-customization/gradient/gradient.component';
+import { PerClassCustomizationComponent } from '../../map-color-customization/per-class-customization/per-class-customization.component';
+import { SelectExportedExtensionComponent } from 'src/app/extra-components/select-exported-extension/select-exported-extension.component';
 
 export interface LegendData {
   color: string;
@@ -30,11 +30,11 @@ const TABLE_DATA: LegendData[] = [
 ];
 
 @Component({
-  selector: 'app-mapping',
-  templateUrl: './mapping.component.html',
-  styleUrls: ['./mapping.component.css']
+  selector: 'app-single-layer-map',
+  templateUrl: './single-layer-map.component.html',
+  styleUrls: ['./single-layer-map.component.css']
 })
-export class MappingComponent implements OnInit {
+export class SingleLayerMapComponent implements OnInit {
 
   constructor(private bottomSheet: MatBottomSheet,
               private layerStorage: LayerStorageService,
@@ -50,49 +50,26 @@ export class MappingComponent implements OnInit {
     [0, 0, 0], // this is the color for the selected samplingPoint
     [0, 0, 0] // this is the color for the gradient applied previously
   ];
-  private vectorLayerFeatures = [];
 
-  originalLayer: Layer;
-  rectifiedLayer: Layer = null;
-  selectedLayer: Layer = null;
+  layer: Layer;
   selectedSamplingPointId = -1;
   selectedSPFirstCoordinate = 0;
   selectedSPSecondCoordinate = 0;
   selectedSPData = 0;
-  SPDataFromOtherLayer = 0;
-  mapTypes: string[] = ['Original', 'Retificado'];
-  selectedMapType = 'Original';
 
   dataSource = TABLE_DATA;
   displayedColumns: string[] = ['Cor', 'Classe'];
 
   ngOnInit(): void {
-    this.originalLayer = this.layerStorage.getOriginalLayer();
-    this.selectedLayer = this.originalLayer;
-    this.mappingService.renderMap(this.selectedLayer.samplingPoints, this.samplingPointsColors);
+    this.layer = this.layerStorage.getOriginalLayer();
+    this.mappingService.renderMap(this.layer.samplingPoints, this.samplingPointsColors);
   }
 
   exportLayer(): void {
-    const layerType = 'Retificada';
+    const layerType = 'Original';
     this.bottomSheet.open(SelectExportedExtensionComponent, {
       data: { layerType }
     });
-  }
-
-  changeSelectedMap(mapType: string): void {
-    if (this.selectedSamplingPointId !== -1) {
-      this.unchooseSamplingPoint();
-    }
-    if (mapType === 'Original') {
-      this.selectedLayer = this.originalLayer;
-      this.mappingService.updateMap(this.selectedLayer.samplingPoints, this.samplingPointsColors);
-    } else {
-      if (this.rectifiedLayer === null) {
-        this.rectifiedLayer = this.layerStorage.getRectifiedLayer();
-      }
-      this.selectedLayer = this.rectifiedLayer;
-      this.mappingService.updateMap(this.selectedLayer.samplingPoints, this.samplingPointsColors);
-    }
   }
 
   selectSamplingPoint(clickEvent: Event): void {
@@ -118,42 +95,23 @@ export class MappingComponent implements OnInit {
   chooseNewSamplingPoint(chosenSamplingPointId: number): void {
     this.mappingService.changeSamplingPointColor(chosenSamplingPointId, this.samplingPointsColors[5]);
     this.selectedSamplingPointId = chosenSamplingPointId;
-    this.selectedSPFirstCoordinate = this.selectedLayer.samplingPoints[chosenSamplingPointId].coordinates[0];
-    this.selectedSPSecondCoordinate = this.selectedLayer.samplingPoints[chosenSamplingPointId].coordinates[1];
-    this.selectedSPData = this.selectedLayer.samplingPoints[chosenSamplingPointId].data;
-    if (this.selectedMapType === 'Original') {
-      if (this.rectifiedLayer === null) {
-        this.SPDataFromOtherLayer = this.layerStorage.getRectifiedLayer().samplingPoints[chosenSamplingPointId].data;
-      } else {
-        this.SPDataFromOtherLayer = this.rectifiedLayer.samplingPoints[chosenSamplingPointId].data;
-      }
-    } else {
-      this.SPDataFromOtherLayer = this.originalLayer.samplingPoints[chosenSamplingPointId].data;
-    }
+    this.selectedSPFirstCoordinate = this.layer.samplingPoints[chosenSamplingPointId].coordinates[0];
+    this.selectedSPSecondCoordinate = this.layer.samplingPoints[chosenSamplingPointId].coordinates[1];
+    this.selectedSPData = this.layer.samplingPoints[chosenSamplingPointId].data;
   }
 
   unchooseSamplingPoint(): void {
-    const samplingPointClass = this.selectedLayer.samplingPoints[this.selectedSamplingPointId].data;
+    const samplingPointClass = this.layer.samplingPoints[this.selectedSamplingPointId].data;
     this.mappingService.changeSamplingPointColor(this.selectedSamplingPointId, this.samplingPointsColors[samplingPointClass - 1]);
     this.selectedSPFirstCoordinate = 0;
     this.selectedSPSecondCoordinate = 0;
     this.selectedSPData = 0;
     this.selectedSamplingPointId = -1;
-    this.SPDataFromOtherLayer = 0;
   }
 
   chooseAnotherSamplingpoint(chosenSamplingPoint: number): void {
     this.unchooseSamplingPoint();
     this.chooseNewSamplingPoint(chosenSamplingPoint);
-  }
-
-  changeSamplingPointColor(featureId: number, newColorRgb: number[]): void {
-    this.vectorLayerFeatures[featureId].setStyle(new Style({
-      image: new Circle({
-        radius: 3,
-        fill: new Fill({ color: newColorRgb })
-      })
-    }));
   }
 
   openGradientDialog(): void {
@@ -170,7 +128,7 @@ export class MappingComponent implements OnInit {
         for (let i = 0; i < 5; i++) {
           this.refreshLegendTable(i + 1);
         }
-        this.mappingService.updateMap(this.selectedLayer.samplingPoints, this.samplingPointsColors);
+        this.mappingService.updateMap(this.layer.samplingPoints, this.samplingPointsColors);
         if (this.selectedSamplingPointId !== -1) {
           this.unchooseSamplingPoint();
         }
@@ -190,7 +148,7 @@ export class MappingComponent implements OnInit {
         this.samplingPointsColors[classNumber - 1] = result.data;
         if (classNumber !== 6) {
           // caso for alteração do seletor
-          this.mappingService.updateMap(this.selectedLayer.samplingPoints, this.samplingPointsColors);
+          this.mappingService.updateMap(this.layer.samplingPoints, this.samplingPointsColors);
         }
         if (this.selectedSamplingPointId !== -1) {
           const color = this.samplingPointsColors[this.selectedSPData];
@@ -213,7 +171,8 @@ export class MappingComponent implements OnInit {
 
   getMapJPG(): void {
     let mapName: string;
-    mapName = this.selectedLayer.fileName.concat(' - ').concat(this.selectedMapType);
+    mapName = this.layer.fileName.concat(' - ').concat('Original');
     this.mappingService.downloadMapJpg(mapName);
   }
+
 }

@@ -1,24 +1,10 @@
 <mat-sidenav-container class="sidenavContainer">
     <mat-sidenav class="sidenav" position = "start" mode = "side" opened>
-        <div class = "sidenavTitle">Dados das Layers</div>
+        <div class = "sidenavTitle">Dados da Layer</div>
 
         <mat-accordion>
-            <mat-expansion-panel style = "margin-top: 2vh;">
-                <mat-expansion-panel-header>
-                    Seleção de Layers
-                </mat-expansion-panel-header>
 
-                <div class="mapSelection">
-                    <mat-radio-group [(ngModel)]="selectedMapType">
-                        <mat-radio-button color="primary" *ngFor="let mapType of mapTypes" [value] = "mapType"
-                            (change)="changeSelectedMap(mapType)">
-                            {{mapType}}
-                        </mat-radio-button>
-                    </mat-radio-group>
-                </div>
-            </mat-expansion-panel>
-
-            <mat-expansion-panel>
+            <mat-expansion-panel style="margin-top: 2vh;">
                 <mat-expansion-panel-header>
                     <mat-panel-title>Ponto Amostral</mat-panel-title>
                 </mat-expansion-panel-header>
@@ -37,12 +23,6 @@
                     <mat-form-field class="layerInfo" appearance="outline">
                         <mat-label>Classe</mat-label>
                         <input matInput [value] = "selectedSPData" color = "primary" readonly>
-                    </mat-form-field>
-
-                    <mat-form-field class="layerInfo" appearance="outline">
-                        <mat-label *ngIf="selectedMapType === mapTypes[0]">Após retificar</mat-label>
-                        <mat-label *ngIf="selectedMapType === mapTypes[1]">Sem retificar</mat-label>
-                        <input matInput [value] = "SPDataFromOtherLayer" color = "primary" readonly>
                     </mat-form-field>
                 </div>
                 <div *ngIf="selectedSamplingPointId === -1">
@@ -96,7 +76,7 @@
         </button>
 
         <button mat-button color = "primary" class="downloadJpgButton" (click) = "exportLayer()">
-            Exportar ZM Retificada
+            Exportar ZM
         </button>
     </mat-sidenav>
     
@@ -104,3 +84,4 @@
         <div id="map" (click) = "selectSamplingPoint($event)" class="map"></div>
     </mat-sidenav-content>
 </mat-sidenav-container>
+

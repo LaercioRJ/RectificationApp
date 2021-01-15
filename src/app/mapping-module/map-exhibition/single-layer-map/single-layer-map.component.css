@@ -1,0 +1,84 @@
+.map{
+    width: 100%;
+    height: 92vh;
+}
+.sidenavContainer{
+    margin-top: 8vh;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+}
+.sidenav{
+    width: 13%;
+    text-align: center;
+    background-color: whitesmoke;
+}
+.sidenavTitle{
+    text-align: center;
+    font-size: 140%;
+}
+.mat-expansion-panel{
+    border-radius: 7px;
+}
+.warningText{
+    text-align: center;
+}
+.layerInfo{
+    text-align: center;
+    max-width: 100%;
+}
+table{
+    max-width: 100%;
+}
+#circle1{
+    background: blue;
+    border-radius: 50%;
+    width: 0.70vw;
+    height: 1.40vh;
+
+}
+#circle2{
+    background: yellow;
+    border-radius: 50%;
+    width: 0.70vw;
+    height: 1.40vh;
+}
+#circle3{
+    background: red;
+    border-radius: 50%;
+    width: 0.70vw;
+    height: 1.40vh;
+}
+#circle4{
+    background: green;
+    border-radius: 50%;
+    width: 0.70vw;
+    height: 1.40vh;
+}
+#circle5{
+    background: rgb(139, 0, 0);
+    border-radius: 50%;
+    width: 0.70vw;
+    height: 1.40vh;
+}
+#circleSeletor{
+    background: black;
+    border-radius: 50%;
+    width: 0.70vw;
+    height: 1.40vh;
+}
+.classColumn{
+    margin-left: 10vw;
+}
+.downloadJpgButton{
+    background-color: rgb(72, 92, 207);
+    color: white;
+    margin-top: 1vh;
+    border-radius: 1vh;
+}
+.gradientButton{
+    margin-top: 2vh;
+    background-color: rgb(153, 200, 253);
+}

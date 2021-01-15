@@ -1,19 +1,19 @@
 import { Component, OnInit } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
 import { MatBottomSheet } from '@angular/material/bottom-sheet';
+import { MatDialog } from '@angular/material/dialog';
 
 import Circle from 'ol/style/Circle';
 import Fill from 'ol/style/Fill';
 import { Style } from 'ol/style';
 
-import { LayerStorageService } from '../../services/layer-storage.service';
-import { MappingService } from '../map-services/mapping.service';
+import { LayerStorageService } from 'src/app/services/layer-storage.service';
+import { MappingService } from '../../map-services/mapping.service';
 
-import { Layer } from '../../classes/layer';
+import { Layer } from 'src/app/classes/layer';
 
-import { GradientComponent } from '../map-color-customization/gradient/gradient.component';
-import { PerClassCustomizationComponent } from '../map-color-customization/per-class-customization/per-class-customization.component';
-import { SelectExportedExtensionComponent } from '../../extra-components/select-exported-extension/select-exported-extension.component';
+import { GradientComponent } from '../../map-color-customization/gradient/gradient.component';
+import { PerClassCustomizationComponent } from '../../map-color-customization/per-class-customization/per-class-customization.component';
+import { SelectExportedExtensionComponent } from 'src/app/extra-components/select-exported-extension/select-exported-extension.component';
 
 export interface LegendData {
   color: string;
@@ -30,11 +30,11 @@ const TABLE_DATA: LegendData[] = [
 ];
 
 @Component({
-  selector: 'app-mapping',
-  templateUrl: './mapping.component.html',
-  styleUrls: ['./mapping.component.css']
+  selector: 'app-multiple-layer-map',
+  templateUrl: './multiple-layer-map.component.html',
+  styleUrls: ['./multiple-layer-map.component.css']
 })
-export class MappingComponent implements OnInit {
+export class MultipleLayerMapComponent implements OnInit {
 
   constructor(private bottomSheet: MatBottomSheet,
               private layerStorage: LayerStorageService,
@@ -50,7 +50,6 @@ export class MappingComponent implements OnInit {
     [0, 0, 0], // this is the color for the selected samplingPoint
     [0, 0, 0] // this is the color for the gradient applied previously
   ];
-  private vectorLayerFeatures = [];
 
   originalLayer: Layer;
   rectifiedLayer: Layer = null;
@@ -147,15 +146,6 @@ export class MappingComponent implements OnInit {
     this.chooseNewSamplingPoint(chosenSamplingPoint);
   }
 
-  changeSamplingPointColor(featureId: number, newColorRgb: number[]): void {
-    this.vectorLayerFeatures[featureId].setStyle(new Style({
-      image: new Circle({
-        radius: 3,
-        fill: new Fill({ color: newColorRgb })
-      })
-    }));
-  }
-
   openGradientDialog(): void {
     const classColors = this.samplingPointsColors;
     const mapGradientDialog = this.matDialog.open(GradientComponent, {
@@ -216,4 +206,5 @@ export class MappingComponent implements OnInit {
     mapName = this.selectedLayer.fileName.concat(' - ').concat(this.selectedMapType);
     this.mappingService.downloadMapJpg(mapName);
   }
+
 }

@@ -22,7 +22,6 @@ export class GradientComponent implements OnInit {
   ];
 
   ngOnInit(): void {
-    console.log(this.colorValues);
     this.initializeGradientExample();
   }
 

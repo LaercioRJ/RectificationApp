@@ -111,7 +111,7 @@ export class MappingService {
     return this.map.getFeaturesAtPixel(eventPixel)[0].getId();
   }
 
-  downloadMapJpg(): void {
+  downloadMapJpg(fileName: string): void {
     // tslint:disable-next-line: only-arrow-functions
     this.map.once('rendercomplete', function() {
       const mapCanvas = document.createElement('canvas');
@@ -133,7 +133,7 @@ export class MappingService {
       } else {
         const element = document.createElement('a');
         element.setAttribute('href', mapCanvas.toDataURL());
-        element.setAttribute('download', 'Mapa Zona de Manejo');
+        element.setAttribute('download', fileName);
         element.style.display = 'none';
         document.body.appendChild(element);
         element.click();

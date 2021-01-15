@@ -90,6 +90,10 @@ export class RectificationFormComponent implements OnInit {
     this.router.navigateByUrl('edicao');
   }
 
+  visualizeOriginalLayerMap(): void {
+    this.router.navigateByUrl('mapeamento/layer-unica');
+  }
+
   executeRectification(): void {
     let kFormat: string;
     let kSize: number;
@@ -151,7 +155,7 @@ export class RectificationFormComponent implements OnInit {
     this.serverConnection.consumeRectification(kFormat, kSize, rMethod, iteration).subscribe(result => {
       this.responseConvertion.convertResponseToLayer(result.body);
       this.loadBarState = 'none';
-      this.router.navigateByUrl('/mapeamento/0');
+      this.router.navigateByUrl('mapeamento/varias-layers');
     },
       err => {
         this.messageDelivery.showTimedMessage('Houve algum problema na conexão com o servidor, por favor tente novamente' +

@@ -16,6 +16,8 @@ import { SaveLayerAlterationsComponent } from './management-zone-editor/save-lay
 import { SaveBeforeLeave } from './guards/save-before-leave';
 import { PerClassCustomizationComponent } from './mapping-module/map-color-customization/per-class-customization/per-class-customization.component';
 import { SelectExportedExtensionComponent } from './extra-components/select-exported-extension/select-exported-extension.component';
+import { MultipleLayerMapComponent } from './mapping-module/map-exhibition/multiple-layer-map/multiple-layer-map.component';
+import { SingleLayerMapComponent } from './mapping-module/map-exhibition/single-layer-map/single-layer-map.component';
 
 @NgModule({
   declarations: [
@@ -26,7 +28,9 @@ import { SelectExportedExtensionComponent } from './extra-components/select-expo
     EditorTableComponent,
     SaveLayerAlterationsComponent,
     PerClassCustomizationComponent,
-    SelectExportedExtensionComponent
+    SelectExportedExtensionComponent,
+    MultipleLayerMapComponent,
+    SingleLayerMapComponent,
   ],
   imports: [
     BrowserModule,
