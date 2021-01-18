@@ -42,6 +42,7 @@ export class RectificationFormComponent implements OnInit {
   fileSize = 0;
   fileName = '--';
   fileSamplingPointsQuantity = 0;
+  layer: Layer;
 
   loadBarState = 'none';
 
@@ -82,7 +83,7 @@ export class RectificationFormComponent implements OnInit {
   async recieveNewArchive(event: any): Promise<void> {
     if (event.target.files && event.target.files[0]) {
       const archive: File = event.target.files[0];
-      const layer: Layer = await this.layerImporting.fileToLayer(archive);
+      this.layer = this.layerImporting.fileToLayer(archive);
     }
   }
 

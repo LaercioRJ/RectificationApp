@@ -26,4 +26,8 @@ export class AppComponent {
     });
   }
 
+  returnHomePage(): void {
+    this.router.navigateByUrl('');
+  }
+
 }

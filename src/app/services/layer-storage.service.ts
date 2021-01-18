@@ -17,6 +17,10 @@ export class LayerStorageService {
     this.originalLayer = newLayer;
   }
 
+  getOriginalLayerData(): Layer {
+    return this.originalLayer;
+  }
+
   getOriginalLayer(): Layer {
     const copiedLayer = new Layer(this.originalLayer.header1, this.originalLayer.header2, this.originalLayer.header3);
     copiedLayer.fileName = this.originalLayer.fileName;
