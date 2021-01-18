@@ -88,7 +88,7 @@ export class LayerImportingService {
     layer.fileExtension = this.fileExtension;
     this.layerStorage.storeOriginalLayer(layer);
     this.samplingPoints = [];
-    this.messageDelivery.showTimedMessage('Layer importada com sucesso!', 2500);
+    this.messageDelivery.showMessageWithButtonRoute('Layer importada com sucesso', 'Visualizar mapa', 'mapeamento/layer-unica');
     return layer;
   }
 }

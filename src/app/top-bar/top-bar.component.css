@@ -4,3 +4,7 @@
 .mainTitle:hover{
     cursor: pointer;
 }
+.tutorialButton{
+    color: white;
+    border-color: white;
+}

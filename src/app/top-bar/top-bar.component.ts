@@ -1,5 +1,8 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import {MatDialog} from '@angular/material/dialog';
+
+import { TutorialComponent } from '../tutorial/tutorial.component';
 
 @Component({
   selector: 'app-topbar',
@@ -9,10 +12,18 @@ import { Router } from '@angular/router';
 export class AppComponent {
   title = 'rectification-app';
 
-  constructor(private router: Router) {}
+  constructor(private matDialog: MatDialog,
+              private router: Router) {}
 
   goToFirstPage(): void {
     this.router.navigateByUrl('');
+  }
+
+  openTutorial(): void {
+    const tutorialDialogRef = this.matDialog.open(TutorialComponent, {
+      width: '49vw',
+      height: '44vw',
+    });
   }
 
 }

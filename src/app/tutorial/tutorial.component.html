@@ -1,0 +1,100 @@
+<span class="mainTitle">Definições sobre Agricultura de Precisão:</span>
+
+<mat-tab-group>
+    <mat-tab label = "O que é agricultura de precisão?">
+        <p class="text">&nbsp;A Agricultura de Precisão (AP) é um sistema de gestão do cultivo que leva em consideração
+            principalmente a variabilidade de nutrientes no solo, para ser realizada a aplicação de insumos de forma
+            otimizada e produtiva, sem necessitar de remodelação nas infraestruturas tradicionais.
+        </p>
+    </mat-tab>
+    <mat-tab label = "O que é Zona de Manejo?">
+        <p class="text">&nbsp;Para a aplicação da agricultura de precisão a área de cultivo é dividida em subáreas
+            homogêneas, com medições e concentrações similares de nutrientes, colheita ou propriedades
+            físicas do solo. Estas subáreas são chamadas de Zonas de Manejo.
+        </p>
+    </mat-tab>
+    <mat-tab label = "O que é retificação?">
+        <p class="text">&nbsp;Um obstáculo para a utilização de Zonas de Manejo é que estas nem sempre estão bem delineadas,
+            podendo assumir contornos que dificultam a aplicação de recursos no solo. Para auxiliar na solução
+            deste problema, podem ser utilizados métodos de retificação para suavizar os contornos e facilitar
+            a aplicação da Agricultura de Precisão.
+        </p>
+    </mat-tab>
+</mat-tab-group>
+
+<mat-divider></mat-divider>
+
+<span class="mainTitle">Passo-apasso para executar a retificação:</span>
+<br>
+<div style="text-align: right;">
+    <button mat-button class="stepperButton" (click) = "goPreviousStep(stepper)">Anterior</button>
+    <button mat-button class="stepperButton" (click) = "goNextStep(stepper)">Próximo</button>
+</div>
+<mat-horizontal-stepper #stepper>
+    <mat-step>
+        <ng-template matStepLabel>Passo 1</ng-template>
+        <p class="text">&nbsp;Inicialmente o usuário precisa preencher o formulário com os dados: filtro de retificação,
+            formato de janela, número de iterações e tamanho de janela. Estas informações serão utilizadas
+            para personalizar o método de suavização das Zonas de Manejo.
+        </p>
+    </mat-step>
+
+    <mat-step>
+        <ng-template matStepLabel>Passo 2</ng-template>
+        <p class="text">&nbsp;Depois deverá importar os dados da Zona de Manejo (ZM) de um arquivo .txt ou .csv. Caso
+            necessário os valores de classe desta ZM podem ser alterados e visualizados no módulo “Editar
+            Zona de Manejo”. É importante frisar que a ordem correta para as coordenadas no arquivo, deve
+            ser primeiro a longitude e depois latitude, do contrário o mapa será exibido de maneira inadequada.
+        </p>
+    </mat-step>
+
+    <mat-step>
+        <ng-template matStepLabel>Passo 3</ng-template>
+        <p class="text">&nbsp;Após conferir se todos os dados preenchidos estão corretos, é possível executar a aplicação
+            através do botão "Executar Retificação".
+        </p>
+    </mat-step>
+
+    <mat-step>
+        <ng-template matStepLabel>Passo 4</ng-template>
+        <p class="text">&nbsp;Em uma nova tela será exibido um mapa contendo todos os pontos da Zona de Manejo, representados
+            por círculos, sendo que as cores indicam classes diferentes. A partir dos menus laterais é possível:
+            obter acesso às informações dos pontos retificados e dos valores originais; selecionar 
+            amostras do mapa com o mouse para visualizar seus dados; alterar as cores das classes; realizar o download deste em 
+            formato .JPG.
+        </p>
+    </mat-step>
+</mat-horizontal-stepper>
+
+<mat-divider></mat-divider>
+
+<span class="mainTitle">Tipos de arquivos aceitos:</span>
+
+<p class="text">
+    &nbsp;Para importar uma Zona de Manejo (ZM) a aplicação aceita arquivos de extensões .txt ou .csv.
+    &nbsp;A representação da área é feita a partir de um conjunto de pontos amostrais, contendo um par
+    de coordenadas e um valor de classe, utilizado para classificar ou simbolizar a ZM.
+</p>
+
+<mat-divider></mat-divider>
+
+<span class="mainTitle">Exemplo de preenchimento aceito:</span>
+
+<div class="imageSelection">
+    <mat-radio-group [(ngModel)] = "selectedImage">
+        <mat-radio-button color = "primary" *ngFor="let imageOption of imageOptions" [value]="imageOption">
+            {{imageOption}}
+        </mat-radio-button>
+    </mat-radio-group>
+</div>
+
+<div *ngIf="selectedImage === imageOptions[0]" class="image">
+    <img src="../../assets/ExemploTXT.PNG">
+</div>
+<div *ngIf="selectedImage === imageOptions[1]" class="image">
+    <img src="../../assets//ExemploCSV.PNG">
+</div>
+
+<div style="text-align: right;">
+    <button mat-flat-button color = "primary" (click) = "closeDialog()">Voltar</button>
+</div>

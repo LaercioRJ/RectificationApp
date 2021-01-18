@@ -1,4 +1,11 @@
 <mat-toolbar color = "primary">
     <span (click) = "goToFirstPage()" class = "mainTitle">Retificação de Zonas de Manejo</span>
+    <div style="margin-left: auto;">
+        <button matTooltip="Dúvidas? Consulte o tutorial!" (click) = "openTutorial()" class="tutorialButton" mat-stroked-button>
+            <span class="material-icons">
+                help_outline
+            </span>
+        </button>
+    </div>
 </mat-toolbar>
 <router-outlet></router-outlet>
